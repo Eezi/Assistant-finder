@@ -1,0 +1,40 @@
+{
+  "name": "webshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "concurrently \"npm run server arg\" \"cd frontend && npm run start arg\"",
+    "server": "nodemon backend/server",
+    "data:destroy": "node backend/seeder -d",
+    "data:import": "node backend/seeder",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eezi/Fullstack-Webshop.git"
+  },
+  "author": "Tomi Salo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eezi/Fullstack-Webshop/issues"
+  },
+  "homepage": "https://github.com/Eezi/Fullstack-Webshop#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.14",
+    "nodemon": "^2.0.4"
+  }
+}
