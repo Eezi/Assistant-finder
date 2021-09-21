@@ -9,6 +9,7 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { regions } from '../config/config';
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
@@ -54,9 +55,6 @@ const RegisterScreen = ({ location, history }) => {
       dispatch(register(user));
     }
   };
-  console.log("gender ", gender);
-  console.log("desc ", description);
-  console.log("phien ", phone);
 
   return (
     <FormContainer>
@@ -109,11 +107,13 @@ const RegisterScreen = ({ location, history }) => {
         <Form.Group controlId="region">
           <Form.Label>Paikkakunta</Form.Label>
           <Form.Control
-            type="region"
-            placeholder="Kirjoita kaupunki"
-            value={region}
+            as="select"
             onChange={(e) => setRegion(e.target.value)}
-          ></Form.Control>
+          >
+            {regions.map((r) => (
+              <option value={r} key={r}>{r}</option>
+            ))}
+            </Form.Control>
         </Form.Group>
 
         <Form.Group controlId="phone">

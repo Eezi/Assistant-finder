@@ -1,43 +1,55 @@
 import React from "react";
 import styled from "styled-components";
+import { Card, Form } from "react-bootstrap";
 import Raiting from "./Raiting";
 import { Link } from "react-router-dom";
 
 const UserCard = ({ description, name, phone, email, gender, region, _id }) => {
   const checkGender = () => {
-      if (gender === 'male') return 'Mies'
-      if (gender === 'female') return 'Nainen'
-      return 'Muu'
-  }
+    if (gender === "male") return "Mies";
+    if (gender === "female") return "Nainen";
+    return "Muu";
+  };
   return (
-    <Card>
-      {/*<img
-        style={{ maxWidth: "198px", maxHeight: "160px", margin: "0 auto" }}
-        src={product.image}
-      />*/}
-      <Info>
-        <Link to={`/product/${_id}`}>
-          <h5>{name}</h5>
-          <h5>{phone}</h5>
-          <h5>{email}</h5>
-          <h5>{region}</h5>
-          <h5>{checkGender()}</h5>
-        </Link>
-
-        {/*<Raiting value={product.rating} text={`${product.numReviews}`} />*/}
-        <p style={{ margin: ".5rem 0" }}>{description}</p>
-      </Info>
-    </Card>
+    <StyledCard style={{ width: "20rem" }} className="text-light">
+      <Card.Body>
+        <Card.Title className="text-center mb-4">{name}</Card.Title>
+        <Form.Group>
+          <Form.Label className="text-muted">Puhelinnumero</Form.Label>
+          <p>{phone}</p>
+        </Form.Group>
+        <Hr />
+        <Form.Group>
+          <Form.Label className="text-muted">Sähköposti</Form.Label>
+          <p>{email}</p>
+        </Form.Group>
+        <Hr />
+        <Form.Group>
+          <Form.Label className="text-muted">Maakunta</Form.Label>
+          <p>{region}</p>
+        </Form.Group>
+        <Hr />
+        <Form.Group>
+          <Form.Label className="text-muted">Sukupuoli</Form.Label>
+          <p>{checkGender()}</p>
+        </Form.Group>
+        <Hr />
+        <Form.Group>
+          <Form.Label className="text-muted">Kuvaus</Form.Label>
+          <p>{description}</p>
+        </Form.Group>
+      </Card.Body>
+    </StyledCard>
   );
 };
 
 export default UserCard;
 
-const Card = styled.div`
-  border: 1px solid #47484f;
-  max-width: 200px;
-`;
+const StyledCard = styled(Card)`
+  border-radius: 5px;
+  background: linear-gradient(180deg, hsla(0, 0%, 20%, 0.9) 0%, hsla(0, 0%, 12%, 1) 100%);
 
-const Info = styled.div`
-  padding: 0.6rem;
+`;
+const Hr = styled.hr`
+  background-color: #585858;
 `;

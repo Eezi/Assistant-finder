@@ -50,7 +50,7 @@ const Div = styled.div`
   margin: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 1rem;
+  grid-gap: 6.5rem;
 `;
 
 /*const Container = styled.div`
