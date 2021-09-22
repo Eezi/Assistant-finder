@@ -44,7 +44,7 @@ const App = () => {
             <Route path="/placeorder" component={PlaceOrderScreen} />
             <Route path="/register" component={RegisterScreen} />
             <Route path="/profile" component={ProfileScreen} />
-            <Route path="/cart/:id?" component={CartScreen} />
+            <Route path="/chats/:id?" component={CartScreen} />
             <Route path="/search/:keyword" component={HomeScreen} exact />
             <Route path="/page/:pageNumber" component={HomeScreen} exact />
             <Route

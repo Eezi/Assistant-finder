@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
+import ChatList from '../components/Chat/ChatList';
+import ChatProfile from '../components/Chat/ChatProfile';
 import {
   Row,
   Col,
@@ -38,83 +40,22 @@ console.log('location', location)
       history.push('/login?redirect=shipping')
   } 
   return (
+    <div className="h-100">
+    <h1 style={{paddingLeft: '16px'}}>Keskustelut</h1>
     <Row>
-      <Col md={8}>
-        <h1 style={{paddingLeft: '16px'}}>Shopping cart</h1>
-        {cartItems.length === 0 ? (
-          <Message>
-            Your cart is empty<Link to="/">Go back</Link>
-          </Message>
-        ) : (
-          <ListGroup variant="flush">
-            {cartItems.map((item) => (
-              <ListGroup.Item key={item.product}>
-                <Row>
-                  <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
-                  </Col>
-                  <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
-                  </Col>
-                  <Col md={2}>{item.price}</Col>
-                  <Col md={2}>
-                    <Form.Control
-                      as="select"
-                      value={item.qty}
-                      onChange={(e) =>{
-                        console.log('item', e.target.value)
-                        dispatch(
-                          addToCart(item.product, Number(e.target.value))
-                        )
-                      }}
-                    >
-                      {[...Array(item.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Col>
-                  <Col md={2}>
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => removeFromCartHandler(item.product)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        )}
+      <Col className="bg-info h-100 border border-dark">
+        {/* Lista chateista */}
+        <ChatList />
       </Col>
-      <Col md={4} style={{marginTop: '5rem'}}>
-        <Card >
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-                items
-              </h2>
-              $
-              {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
-                .toFixed(2)}
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Button
-                type="button"
-                className="btn-block"
-                disabled={cartItems.length === 0}
-                onClick={checkoutHandler}
-              >Proceed To Checkout</Button>
-            </ListGroup.Item>
-          </ListGroup>
-        </Card>
+      <Col className="bg-dark h-100 d-inline-block border border-dark" md={8}>
+        
+      </Col>
+      <Col className="bg-secondary border border-dark" md={2}>
+        {/* User Profile jonka kanssa chattailee */}
+        <ChatProfile />
       </Col>
     </Row>
+  </div>
   );
 };
 export default CartScreen;

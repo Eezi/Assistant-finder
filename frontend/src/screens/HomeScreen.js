@@ -28,7 +28,7 @@ const HomeScreen = ({ match, history }) => {
   return (
     <>
       <Meta />
-      <H1>LATEST USERS</H1>
+      <H1>Käyttäjät</H1>
       {loading ? (
         <Loader />
       ) : error ? (

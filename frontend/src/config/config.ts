@@ -9,6 +9,11 @@ export const genders = [
     { key: 'other', label: 'Muu' },
 ];
 
+export const userTypes = [
+    { key: 'customer', label: 'Asiakas' },
+    { key: 'assistant', label: 'Avustaja' },
+];
+
 export const regions = [
     "Ahvenanmaa",
     "Etelä-Karjala",

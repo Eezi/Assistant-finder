@@ -14,7 +14,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { register } from "../actions/userActions";
-import { genders } from "../config/config";
+import { genders, userTypes } from "../config/config";
 
 const RegisterScreen = ({ location, history }) => {
   const [email, setEmail] = useState("");
@@ -25,6 +25,7 @@ const RegisterScreen = ({ location, history }) => {
   const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [userType, setUserType] = useState("");
   const [message, setMessage] = useState(null);
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -86,6 +87,26 @@ const RegisterScreen = ({ location, history }) => {
 
         <Form.Group>
           <Form.Label className="d-block">Sukupuoli</Form.Label>
+          <ButtonGroup>
+            {userTypes.map((user, idx) => (
+              <ToggleButton
+                key={idx}
+                id={`radio-${idx}`}
+                type="radio"
+                variant="success"
+                name="radio"
+                value={user.key}
+                checked={userType === user.key}
+                onChange={(e) => setGender(e.currentTarget.value)}
+              >
+                {user.label}
+              </ToggleButton>
+            ))}
+          </ButtonGroup>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label className="d-block">Asiakas vai avustaja?</Form.Label>
           <ButtonGroup>
             {genders.map((g, idx) => (
               <ToggleButton
