@@ -14,6 +14,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { addToCart, removeFromCart } from "../actions/cartActions";
+import ChatContent from "../components/Chat/ChatContent";
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id;
@@ -43,12 +44,12 @@ console.log('location', location)
     <div className="h-100">
     <h1 style={{paddingLeft: '16px'}}>Keskustelut</h1>
     <Row>
-      <Col className="bg-info h-100 border border-dark">
+      <Col className="h-100 border border-dark">
         {/* Lista chateista */}
         <ChatList />
       </Col>
       <Col className="bg-dark h-100 d-inline-block border border-dark" md={8}>
-        
+       <ChatContent /> 
       </Col>
       <Col className="bg-secondary border border-dark" md={2}>
         {/* User Profile jonka kanssa chattailee */}

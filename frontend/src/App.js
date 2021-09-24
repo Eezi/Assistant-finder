@@ -24,7 +24,7 @@ const App = () => {
     <Router>
       <Header />
 
-      <main className="py-3">
+      <main className="py-3 vh-100">
         <Container>
           <Switch>
             <Route path="/product/:id" component={ProductScreen} />

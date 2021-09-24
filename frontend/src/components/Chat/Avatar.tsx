@@ -2,13 +2,17 @@ import React, { FC, ReactElement } from "react";
 import styled from "styled-components";
 import { Container, Row, Col } from "react-bootstrap";
 
-const Avatar: FC<{}> = (image: any): ReactElement => {
+interface AvatarProps {
+  initials: string
+}
+
+const Avatar = (props: { initials: string }) => {
+  const { initials } = props;
   return (
     <AvatarContainer>
-    <div className="avatar-img">
-      <img src={image} alt="#" />
+    <div className="text-center">
+      <h5>{initials}</h5>
     </div>
-    <span className={`isOnline`}></span>
   </AvatarContainer>
   );
 }
@@ -16,8 +20,9 @@ const Avatar: FC<{}> = (image: any): ReactElement => {
 const AvatarContainer = styled.div`
     width: 40px;
     height: 40px;
+    padding-top: 10px;
     border-radius: 50%;
-  
+    background: cyan; 
     margin-right: 20px;
     position: relative;
 `;

@@ -1,31 +1,20 @@
 import React, { FC } from 'react'
+import Avatar from './Avatar'
+import { Form, Button, Row } from 'react-bootstrap'
 
 const ChatContent: FC<{}> = () => {
 
     return (
-        <div className="main__chatcontent">
-        <div className="content__header">
+        <div style={{ minHeight: '550px' }} className="px-2 py-3 mh-100">
           <div className="blocks">
             <div className="current-chatting-user">
-              <Avatar
-                isOnline="active"
-                image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
-              />
-              <p>Tim Hover</p>
+              <p>Tomi Hover</p>
             </div>
           </div>
 
-          <div className="blocks">
-            <div className="settings">
-              <button className="btn-nobg">
-                <i className="fa fa-cog"></i>
-              </button>
-            </div>
-          </div>
-        </div>
         <div className="content__body">
           <div className="chat__items">
-            {this.state.chat.map((itm, index) => {
+            {/*this.state.chat.map((itm, index) => {
               return (
                 <ChatItem
                   animationDelay={index + 2}
@@ -35,26 +24,22 @@ const ChatContent: FC<{}> = () => {
                   image={itm.image}
                 />
               );
-            })}
-            <div ref={this.messagesEndRef} />
+            })*/}
+            <div />
           </div>
         </div>
-        <div className="content__footer">
-          <div className="sendNewMessage">
-            <button className="addFiles">
-              <i className="fa fa-plus"></i>
-            </button>
-            <input
+        <Form.Group className="form-inline text-center">
+            <Form.Control
+              className="w-75"
               type="text"
               placeholder="Type a message here"
-              onChange={this.onStateChange}
-              value={this.state.msg}
+              //onChange={this.onStateChange}
+              //value={this.state.msg}
             />
-            <button className="btnSendMsg" id="sendMsgBtn">
+            <Button className="btnSendMsg" id="sendMsgBtn">
               <i className="fa fa-paper-plane"></i>
-            </button>
-          </div>
-        </div>
+            </Button>
+        </Form.Group>
       </div>
     )
 }
