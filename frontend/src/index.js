@@ -5,7 +5,11 @@ import store from './store.js';
 import './index.css';
 import './bootstrap.min.css';
 import App from './App';
+import moment from 'moment';
+import localization from 'moment/locale/fi';
 import * as serviceWorker from './serviceWorker';
+
+moment.updateLocale('fi', localization);
 
 ReactDOM.render(
   <Provider store={store}>

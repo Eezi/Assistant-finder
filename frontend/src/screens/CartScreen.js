@@ -18,7 +18,6 @@ import ChatContent from "../components/Chat/ChatContent";
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id;
-console.log('location', location)
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   const dispatch = useDispatch();
@@ -48,7 +47,7 @@ console.log('location', location)
         {/* Lista chateista */}
         <ChatList />
       </Col>
-      <Col className="bg-dark h-100 d-inline-block border border-dark" md={8}>
+      <Col className="h-100 d-inline-block border border-dark" md={8}>
        <ChatContent /> 
       </Col>
       <Col className="bg-secondary border border-dark" md={2}>

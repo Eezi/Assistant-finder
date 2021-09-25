@@ -9,18 +9,29 @@ import orderRoutes from './routes/orderRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import morgan from 'morgan';
+import chat from './chat/chat.js'
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 dotenv.config();
 
 connectDB();
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  //path: 'https/chats',
+  origin: '*',
+  methods: ['GET', 'POST'],
+});
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 
 app.use(express.json());
+
+chat(io);
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
@@ -47,4 +58,4 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+server.listen(PORT, console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
