@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 import { Row, Col, Form, ListGroup, ListGroupItem } from "react-bootstrap";
 import Raiting from "../components/Raiting";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  listProductDetails,
-  createProductReview,
-} from "../actions/chatActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/chatConstants";
@@ -38,7 +34,6 @@ const ProductScreen = ({ history, match }) => {
       setRating(0);
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-    dispatch(listProductDetails(match.params.id));
   }, [dispatch, match, successProductReview]);
 
   const addToCartHandler = () => {
@@ -47,7 +42,6 @@ const ProductScreen = ({ history, match }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProductReview(match.params.id, { rating, comment }));
   };
   return (
     <>

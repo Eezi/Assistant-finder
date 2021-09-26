@@ -54,10 +54,10 @@ const createChat = asyncHandler(async (req, res) => {
     participatedUser,
   } = req.body;
 
-  const chatExists = await Chat.findOne({ createdBy, participatedUser });
+  const chatExists = await Chat.findOne({ $or: [ { createdBy }, { participatedUser }, { createdBy: participatedUser }, { participatedUser: createdBy }] });
+  console.log('chat ', chatExists)
   if (chatExists) {
-    res.status(400);
-    throw new Error("Chat already exists");
+    return res.status(201).json(chatExists);
   }
 
   const createdChat = await Chat.create({

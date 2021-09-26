@@ -5,8 +5,6 @@ import UserCard from "../components/Product";
 import { getUserList } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import Paginate from "../components/Paginate";
-import ProductCaroucel from "../components/ProductCaroucel";
 import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
 

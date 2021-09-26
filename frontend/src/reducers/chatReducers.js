@@ -43,22 +43,6 @@ export const ProductListReducer = (state = { products: [] }, action) => {
   }
 };
 
-export const ProductDetailsReducer = (
-  state = { product: { reviews: [] } },
-  action
-) => {
-  switch (action.type) {
-    case PRODUCT_DETAILS_REQUEST:
-      return { loading: true, ...state };
-    case PRODUCT_DETAILS_SUCCESS:
-      return { loading: false, product: action.payload };
-    case PRODUCT_DETAILS_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-
 export const productDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case PRODUCT_DELETE_REQUEST:
@@ -72,33 +56,16 @@ export const productDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const chatCreateReducer = (state = {}, action) => {
+export const chatCreateReducer = (state = { chat: {} }, action) => {
   switch (action.type) {
     case CREATE_CHAT_REQUEST:
-      return { loading: true };
+      return { loading: true, chat: {} };
     case CREATE_CHAT_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return { loading: false, success: true, chat: action.payload };
     case CREATE_CHAT_FAIL:
       return { loading: false, error: action.payload };
     case CREATE_CHAT_RESET:
       return {};
-    default:
-      return state;
-  }
-};
-
-export const updateProductRedcuer = (state = { product: {} }, action) => {
-  switch (action.type) {
-    case PRODUCT_UPDATE_REQUEST:
-      return { loading: true };
-    case PRODUCT_UPDATE_SUCCESS:
-      return { loading: false, success: true };
-    case PRODUCT_UPDATE_FAIL:
-      return { loading: false, error: action.payload };
-    case PRODUCT_UPDATE_RESET:
-      return {
-        product: {},
-      };
     default:
       return state;
   }
