@@ -12,16 +12,16 @@ const UserCard = ({ cardInfo, userId }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const chatCreate = useSelector((state) => state.createChat);
-  //const { chat } = chatCreate;
+  const chatCreatedData = useSelector((state) => state.chatCreate);
+  const { chat, loading } = chatCreatedData;
 
-  console.log('CHAAAAAT ', chatCreate)
+  console.log('CHAAAAAT ', chat)
 
   useEffect(() => {
-    if (!!chatCreate && chatCreate?.success) {
-      history.push(chatCreate?.chat?._id)
+    if (!loading && chat) {
+      history.push(`/chats/${chat?._id}`);
     }
-  }, [chatCreate])
+  }, [chat, loading])
 
   const checkGender = () => {
     if (gender === "male") return "Mies";

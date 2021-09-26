@@ -16,14 +16,15 @@ const getProducts = asyncHandler(async (req, res) => {
   res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
-const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+const getChatById = asyncHandler(async (req, res) => {
+  console.log('req.params.id', req.params.id)
+  const chat = await Chat.findById(req.params.id);
 
-  if (product) {
-    res.json(product);
+  if (chat) {
+    res.json(chat);
   } else {
     res.status(404);
-    throw new Error("Product not found");
+    throw new Error("Chat not found");
   }
 });
 
@@ -55,7 +56,7 @@ const createChat = asyncHandler(async (req, res) => {
   } = req.body;
 
   const chatExists = await Chat.findOne({ $or: [ { createdBy }, { participatedUser }, { createdBy: participatedUser }, { participatedUser: createdBy }] });
-  console.log('chat ', chatExists)
+
   if (chatExists) {
     return res.status(201).json(chatExists);
   }
@@ -103,7 +104,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 const addNewMessage = asyncHandler(async(message) => {
-  console.log('MESSAGE', message)
+  
+  // Todo välitä tälle chatId jotta saadaan oikea chat 
 
   const chat = await Chat.findById('614f4ec4976db14d9525e0a1')
 
@@ -113,8 +115,8 @@ const addNewMessage = asyncHandler(async(message) => {
 
   if (chat) {
     chat.messages.push(message);
-  console.log('chat', chat)
     await chat.save()
+    return chat.messages || [];
     //res.status(201).json({ message: 'Review added' })
   }
 })
@@ -171,7 +173,7 @@ const getTopProducts = asyncHandler(async (req, res) => {
 
 export {
   getProducts,
-  getProductById,
+  getChatById,
   deleteProduct,
   createChat,
   addNewMessage,

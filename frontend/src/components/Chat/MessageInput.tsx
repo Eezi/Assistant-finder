@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
 const NewMessage = ({ socket, userId }) => {
   const [value, setValue] = useState('');
   
   const submitForm = (e) => {
-    e.preventDefault();
     socket.emit('message', { message: value, userId });
     setValue('');
   };
 
   return (
-    <form onSubmit={submitForm}>
-      <input
+     <Form.Group as={Row} className="mt-4">
+        <Col md="10">
+      <Form.Control
         autoFocus
+        className="d-inline"
         value={value}
-        placeholder="Type your message"
+        placeholder="Kirjoita viesti avustajalle"
         onChange={(e) => {
           setValue(e.currentTarget.value);
         }}
       />
-      <button onClick={submitForm}>Lähetä</button>
-    </form>
+      </Col>
+      <Col md="2">
+      <Button onClick={submitForm}>Lähetä</Button>
+    </Col>
+      </Form.Group>
   );
 };
 

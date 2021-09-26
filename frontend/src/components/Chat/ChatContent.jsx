@@ -1,14 +1,13 @@
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import Avatar from './Avatar'
 import styled from 'styled-components'
 import MessageInput from './MessageInput'
 import Messages from './Messages'
 import Loader from "../Loader";
-import { Form, Button, Row } from 'react-bootstrap'
 import { useSelector } from "react-redux";
-import io, { Socket } from 'socket.io-client';
+import io from 'socket.io-client';
 
-const ChatContent = () => {
+const ChatContent = ({ chatMessages }) => {
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
 
@@ -16,7 +15,6 @@ const ChatContent = () => {
   const { userInfo, loading } = userLogin;
   
   useEffect(() => {
-    console.log(window.location.hostname)
     const newSocket = io(`http://${window.location.hostname}:8080`);
     setSocket(newSocket);
     return () => newSocket.close();
@@ -28,7 +26,7 @@ const ChatContent = () => {
         <div style={{ minHeight: '550px' }} className="px-2 py-3 mh-100">
           <div className="blocks">
             <div className="current-chatting-user">
-              <p>Tomi Hover</p>
+              <p>Jaakko</p>
             </div>
           </div>
 
@@ -51,8 +49,8 @@ const ChatContent = () => {
         { socket ? (
         <ChatContainer>
           connected
-          <Messages socket={socket} />
-          <MessageInput userId={userInfo._id} socket={socket} />
+          <Messages chatMessages={chatMessages} socket={socket} />
+          <MessageInput userId={userInfo?._id} socket={socket} />
         </ChatContainer>
       ) : (
         <div>Not Connected</div>

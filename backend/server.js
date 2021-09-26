@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import colors from 'colors';
 import path from 'path';
 import connectDB from './config/db.js';
-import productRoutes from './routes/chatRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import uploadRoutes from './routes/uploadRoutes.js';
@@ -31,7 +31,7 @@ app.use(express.json());
 
 chat(io);
 
-app.use('/api/chats', productRoutes);
+app.use('/api/chats', chatRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
 

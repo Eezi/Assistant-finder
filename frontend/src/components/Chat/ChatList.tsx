@@ -22,10 +22,6 @@ const ChatList: FC<{}> = () => {
   return initials.toUpperCase();
 }
 
-for (let user of users){
-  console.log('adsa', getInitials(user.name))
-}
-
     return (
         <Row className="justify-content-center">
           <Col className="text-center my-3">

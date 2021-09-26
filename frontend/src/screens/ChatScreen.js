@@ -6,10 +6,25 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { getChatById } from '../actions/chatActions';
+import { useSelector, useDispatch } from "react-redux";
 import ChatContent from "../components/Chat/ChatContent";
+import Loader from "../components/Loader";
 
-const CartScreen = ({ match, location, history }) => {
-  const productId = match.params.id;
+const ChatScreen = ({ match }) => {
+  const chatId = match.params.id;
+  const dispatch = useDispatch();
+
+  const chatData = useSelector((state) => state.getChat);
+  const { chat, loading } = chatData;
+
+  useEffect(() => {
+    if (chatId) {
+      dispatch(getChatById(chatId));
+    }
+  }, [chatId, dispatch]);
+
+  if (loading) return <Loader />
 
   return (
     <div className="h-100">
@@ -20,7 +35,7 @@ const CartScreen = ({ match, location, history }) => {
         <ChatList />
       </Col>
       <Col className="h-100 d-inline-block border border-dark" md={8}>
-       <ChatContent /> 
+       <ChatContent chatMessages={chat?.messages} /> 
       </Col>
       <Col className="bg-secondary border border-dark" md={2}>
         {/* User Profile jonka kanssa chattailee */}
@@ -30,4 +45,4 @@ const CartScreen = ({ match, location, history }) => {
   </div>
   );
 };
-export default CartScreen;
+export default ChatScreen;

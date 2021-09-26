@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
-const Messages = ({ socket }) => {
+const Messages = ({ socket, chatMessages }) => {
   const [messages, setMessages] = useState([]);
   moment.locale('fi')
 
   useEffect(() => {
+      if (chatMessages?.length > 0) {
+        setMessages(chatMessages);
+      }
+  }, [chatMessages]);
+
+  useEffect(() => {
     const messageListener = (message) => {
-        if (message?.value?.length > 0) {
-            setMessages((prevMessages) => [...prevMessages, message])
+        if (message?.length > 0) {
+            setMessages(message)
         }
     };
   
@@ -30,20 +36,19 @@ const Messages = ({ socket }) => {
       socket.off('deleteMessage', deleteMessageListener);
     };
   }, [socket]);
-  console.log(messages)
 
   return (
     <MessageList>
       {messages
         .sort((a, b) => a.time - b.time)
-        .map((message) => (
+        .map(({ createdAt, message }) => (
           <MessageContainer
-            key={message.createdAt}
-            title={`Sent at ${new Date(message.time).toLocaleTimeString()}`}
+            key={createdAt}
+            title={`Sent at ${new Date(createdAt).toLocaleTimeString()}`}
           >
-            <User>{message.user.name}:</User>
-            <Message>{message.value}</Message>
-            <DateMark>{moment.unix(message.createdAt / 1000).format('LLL')}</DateMark>
+            <User>Tomi:</User>
+            <Message>{message}</Message>
+            <DateMark>{moment(createdAt).format('LLL')}</DateMark>
           </MessageContainer>
         ))
       }

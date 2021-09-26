@@ -26,24 +26,22 @@ class Connection {
     messages.forEach((message) => this.sendMessage(message));
   }
 
-  handleMessage(value) {
+  handleMessage = async(value) => {
     const message = {
       createdBy: value.userId,
       createdAt: new Date(),
       message: value.message,
     };
-    addNewMessage(message)
+    const data = await addNewMessage(message)
+    this.sendMessage(data);
 
-    messages.push(message);
-    this.sendMessage(message);
-
-    setTimeout(
+    /*setTimeout(
       () => {
         messages = [];
         this.io.sockets.emit('deleteMessage', message.id);
       },
       messageExpirationTimeMS,
-    );
+    );*/
   }
 
   disconnect() {
