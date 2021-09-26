@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   listProductDetails,
   createProductReview,
-} from "../actions/productActions";
+} from "../actions/chatActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
+import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/chatConstants";
 import Meta from "../components/Meta";
 
 const ProductScreen = ({ history, match }) => {

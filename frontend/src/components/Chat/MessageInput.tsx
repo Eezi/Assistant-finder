@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const NewMessage = ({ socket, userId }) => {
   const [value, setValue] = useState('');
+  
   const submitForm = (e) => {
     e.preventDefault();
     socket.emit('message', { message: value, userId });

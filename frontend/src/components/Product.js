@@ -1,15 +1,31 @@
 import React from "react";
 import styled from "styled-components";
-import { Card, Form } from "react-bootstrap";
+import { Card, Form, Button } from "react-bootstrap";
 import Raiting from "./Raiting";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createChat } from "../actions/chatActions";
 
-const UserCard = ({ description, name, phone, email, gender, region, _id }) => {
+const UserCard = ({ cardInfo, userId }) => {
+  const { description, name, phone, email, gender, region, _id } = cardInfo;
+  const dispatch = useDispatch();
   const checkGender = () => {
     if (gender === "male") return "Mies";
     if (gender === "female") return "Nainen";
     return "Muu";
   };
+
+  const handleCreateChat = () => {
+    const chat = {
+      createdBy: userId,
+      participatedUser: _id,
+      createdAt: new Date(),
+      messages: [],
+    };
+
+    dispatch(createChat(chat));
+  };
+
   return (
     <StyledCard style={{ width: "20rem" }} className="text-light">
       <Card.Body>
@@ -39,6 +55,9 @@ const UserCard = ({ description, name, phone, email, gender, region, _id }) => {
           <p>{description}</p>
         </Form.Group>
       </Card.Body>
+      <Card.Footer className="text-center">
+        <Button onClick={handleCreateChat}>Avaa keskustelu</Button>
+        </Card.Footer>
     </StyledCard>
   );
 };

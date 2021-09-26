@@ -4,14 +4,14 @@ import {
   getProducts,
   getProductById,
   deleteProduct,
-  createProduct,
+  createChat,
   updateProduct,
   createProductReview,
   getTopProducts
-} from "../controllers/productController.js";
+} from "../controllers/chatController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getProducts).post(protect, admin, createProduct);
+router.route("/").get(getProducts).post(protect, createChat);
 router.get("/top", getTopProducts);
 router
   .route("/:id")

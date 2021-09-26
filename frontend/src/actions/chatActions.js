@@ -8,9 +8,9 @@ import {
     PRODUCT_DELETE_REQUEST,
     PRODUCT_DELETE_SUCCESS,
     PRODUCT_DELETE_FAIL,
-    CREATE_PRODUCT_REQUEST,
-    CREATE_PRODUCT_SUCCESS,
-    CREATE_PRODUCT_FAIL,
+    CREATE_CHAT_REQUEST,
+    CREATE_CHAT_SUCCESS,
+    CREATE_CHAT_FAIL,
     PRODUCT_UPDATE_REQUEST,
     PRODUCT_UPDATE_SUCCESS,
     PRODUCT_UPDATE_FAIL,
@@ -20,7 +20,7 @@ import {
     PRODUCT_TOP_REQUEST,
     PRODUCT_TOP_SUCCESS,
     PRODUCT_TOP_FAIL
-} from '../constants/productConstants.js'
+} from '../constants/chatConstants.js'
 import axios from 'axios'
 
 export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) => {
@@ -99,10 +99,11 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createChat = (chat) => async (dispatch, getState) => {
+  console.log('chat', chat)
   try {
     dispatch({
-      type: CREATE_PRODUCT_REQUEST,
+      type: CREATE_CHAT_REQUEST,
     });
 
     const { userLogin: { userInfo } } = getState()
@@ -114,18 +115,18 @@ export const createProduct = () => async (dispatch, getState) => {
     };
     const { data } = await axios.post(
       "/api/products",
-      {},
+      chat,
       config
     );
 
     dispatch({
-      type: CREATE_PRODUCT_SUCCESS,
+      type: CREATE_CHAT_SUCCESS,
       payload: data,
     });
 
   } catch (error) {
     dispatch({
-      type: CREATE_PRODUCT_FAIL,
+      type: CREATE_CHAT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

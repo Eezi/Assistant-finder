@@ -71,7 +71,6 @@ export const logout = () => (dispatch) => {
 };
 
 export const register = (user) => async (dispatch) => {
-  console.log('user', user)
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,

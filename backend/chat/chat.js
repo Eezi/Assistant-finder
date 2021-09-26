@@ -1,10 +1,7 @@
+import { addNewMessage } from '../controllers/chatController.js';
+
 const messages = [];
 const users = new Map();
-
-const defaultUser = {
-  id: 'anon',
-  name: 'Anonymous',
-};
 
 const messageExpirationTimeMS = 50*60 * 1000;
 
@@ -30,14 +27,12 @@ class Connection {
   }
 
   handleMessage(value) {
-    console.log('vale', value)
     const message = {
-     // id: uuidv4(),
-      userId: value.userId,
-      user: users.get(this.socket) || defaultUser,
-      value: value.message,
-      createdAt: Date.now()
+      createdBy: value.userId,
+      createdAt: new Date(),
+      message: value.message,
     };
+    addNewMessage(message)
 
     messages.push(message);
     this.sendMessage(message);

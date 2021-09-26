@@ -3,6 +3,7 @@ import Avatar from './Avatar'
 import styled from 'styled-components'
 import MessageInput from './MessageInput'
 import Messages from './Messages'
+import Loader from "../Loader";
 import { Form, Button, Row } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import io, { Socket } from 'socket.io-client';
@@ -11,8 +12,8 @@ const ChatContent = () => {
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, loading } = userLogin;
   
   useEffect(() => {
     console.log(window.location.hostname)
@@ -20,6 +21,8 @@ const ChatContent = () => {
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
+
+  if (loading) return <Loader />
 
     return (
         <div style={{ minHeight: '550px' }} className="px-2 py-3 mh-100">
@@ -49,7 +52,7 @@ const ChatContent = () => {
         <ChatContainer>
           connected
           <Messages socket={socket} />
-          <MessageInput userId={user?._id} socket={socket} />
+          <MessageInput userId={userInfo._id} socket={socket} />
         </ChatContainer>
       ) : (
         <div>Not Connected</div>

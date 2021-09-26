@@ -4,12 +4,12 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { CREATE_PRODUCT_RESET } from '../constants/productConstants';
+import { CREATE_CHAT_RESET } from '../constants/chatConstants';
 import {
   listProducts,
   deleteProduct,
-  createProduct,
-} from "../actions/productActions";
+  createChat,
+} from "../actions/chatActions";
 import Paginate from '../components/Paginate';
 
 const ProductListScreen = ({ history, match }) => {
@@ -38,7 +38,7 @@ const ProductListScreen = ({ history, match }) => {
   } = productDelete;
 
   useEffect(() => {
-    dispatch({ type: CREATE_PRODUCT_RESET })
+    dispatch({ type: CREATE_CHAT_RESET })
     if (!userInfo.isAdmin) {
       history.push('/login')
     } 
@@ -47,7 +47,7 @@ const ProductListScreen = ({ history, match }) => {
     } else {
       dispatch(listProducts('', pageNumber));
     }
-  }, [dispatch, history, successDelete, successCreate, createProduct, pageNumber, userInfo]);
+  }, [dispatch, history, successDelete, successCreate, createChat, pageNumber, userInfo]);
 
   const handleproductDelete = (productId) => {
     if (window.confirm("Are you sure?")) {
@@ -56,7 +56,7 @@ const ProductListScreen = ({ history, match }) => {
   };
 
   const createProductHandler = () => {
-    dispatch(createProduct());
+    //dispatch(createProduct());
   };
 
   return (

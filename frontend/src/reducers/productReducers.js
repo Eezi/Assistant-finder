@@ -8,10 +8,10 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
-  CREATE_PRODUCT_REQUEST,
-  CREATE_PRODUCT_SUCCESS,
-  CREATE_PRODUCT_FAIL,
-  CREATE_PRODUCT_RESET,
+  CREATE_CHAT_REQUEST,
+  CREATE_CHAT_SUCCESS,
+  CREATE_CHAT_FAIL,
+  CREATE_CHAT_RESET,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
@@ -23,7 +23,7 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
-} from "../constants/productConstants.js";
+} from "../constants/chatConstants.js";
 
 export const ProductListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
@@ -72,15 +72,15 @@ export const productDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const productCreateReducer = (state = {}, action) => {
+export const chatCreateReducer = (state = {}, action) => {
   switch (action.type) {
-    case CREATE_PRODUCT_REQUEST:
+    case CREATE_CHAT_REQUEST:
       return { loading: true };
-    case CREATE_PRODUCT_SUCCESS:
+    case CREATE_CHAT_SUCCESS:
       return { loading: false, success: true, product: action.payload };
-    case CREATE_PRODUCT_FAIL:
+    case CREATE_CHAT_FAIL:
       return { loading: false, error: action.payload };
-    case CREATE_PRODUCT_RESET:
+    case CREATE_CHAT_RESET:
       return {};
     default:
       return state;

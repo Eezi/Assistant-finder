@@ -8,7 +8,7 @@ const Messages = ({ socket }) => {
 
   useEffect(() => {
     const messageListener = (message) => {
-        if (message.value.length > 0) {
+        if (message?.value?.length > 0) {
             setMessages((prevMessages) => [...prevMessages, message])
         }
     };

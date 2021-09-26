@@ -36,7 +36,7 @@ const HomeScreen = ({ match, history }) => {
       ) : (
         <Div>
           {users.map((item) => (
-            <UserCard key={item._id} {...item} />
+            <UserCard key={item._id} cardInfo={item} userId={userInfo?._id} />
           ))}
         </Div>
       )}

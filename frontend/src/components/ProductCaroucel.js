@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Carousel, Image } from "react-bootstrap";
 import Loader from "./Loader";
 import Message from "./Message";
-import { getTopProducts } from "../actions/productActions";
+import { getTopProducts } from "../actions/chatActions";
 
 const ProductCaroucel = () => {
   const dispatch = useDispatch();

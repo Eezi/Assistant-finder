@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Product from "../models/productModel.js";
+import Chat from "../models/chatModel.js";
 
 const getProducts = asyncHandler(async (req, res) => {
   const pageSize = 8;
@@ -45,21 +45,28 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // Create new product
 // POST /api/products
 // Access admin
-const createProduct = asyncHandler(async (req, res) => {
-  const product = new Product({
-    name: "Sample name",
-    user: req.user._id,
-    description: "Sample description",
-    price: 0,
-    countInStock: 0,
-    category: "Sample category",
-    brand: "Sample brand",
-    numReviews: 0,
-    image: "./images/sample.jpg",
-  });
+const createChat = asyncHandler(async (req, res) => {
 
-  const createdProduct = await product.save();
-  res.status(201).json(createdProduct);
+  const {
+    createdAt,
+    messages,
+    createdBy,
+    participatedUser,
+  } = req.body;
+
+  const chatExists = await Chat.findOne({ createdBy, participatedUser });
+  if (chatExists) {
+    res.status(400);
+    throw new Error("Chat already exists");
+  }
+
+  const createdChat = await Chat.create({
+    createdAt,
+    messages,
+    createdBy,
+    participatedUser,
+  });
+  res.status(201).json(createdChat);
 });
 
 // Update product
@@ -95,6 +102,22 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+const addNewMessage = asyncHandler(async(message) => {
+  console.log('MESSAGE', message)
+
+  const chat = await Chat.findById('614f4ec4976db14d9525e0a1')
+
+  if (!chat.messages) {
+    chat.messages = [];
+  }
+
+  if (chat) {
+    chat.messages.push(message);
+  console.log('chat', chat)
+    await chat.save()
+    //res.status(201).json({ message: 'Review added' })
+  }
+})
 // Create new review
 // POST /api/products/:id/revuews
 // Access private
@@ -150,7 +173,8 @@ export {
   getProducts,
   getProductById,
   deleteProduct,
-  createProduct,
+  createChat,
+  addNewMessage,
   updateProduct,
   createProductReview,
   getTopProducts
