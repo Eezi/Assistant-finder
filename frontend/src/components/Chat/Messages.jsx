@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
-const Messages = ({ socket, chatMessages }) => {
+const Messages = ({ socket, chatMessages, participatedUser, user }) => {
   const [messages, setMessages] = useState([]);
   moment.locale('fi')
 
@@ -37,16 +37,23 @@ const Messages = ({ socket, chatMessages }) => {
     };
   }, [socket]);
 
+  const checkUserName = (userId) => {
+    if (userId === participatedUser?._id) {
+      return participatedUser.name;
+    }
+    return user.name;
+  };
+
   return (
     <MessageList>
       {messages
         .sort((a, b) => a.time - b.time)
-        .map(({ createdAt, message }) => (
+        .map(({ createdAt, message, createdBy }) => (
           <MessageContainer
             key={createdAt}
             title={`Sent at ${new Date(createdAt).toLocaleTimeString()}`}
           >
-            <User>Tomi:</User>
+            <User>{checkUserName(createdBy)}</User>
             <Message>{message}</Message>
             <DateMark>{moment(createdAt).format('LLL')}</DateMark>
           </MessageContainer>

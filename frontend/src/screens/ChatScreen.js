@@ -7,6 +7,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { getChatById } from '../actions/chatActions';
+import { getUserDetails } from '../actions/userActions';
 import { useSelector, useDispatch } from "react-redux";
 import ChatContent from "../components/Chat/ChatContent";
 import Loader from "../components/Loader";
@@ -18,28 +19,38 @@ const ChatScreen = ({ match }) => {
   const chatData = useSelector((state) => state.getChat);
   const { chat, loading } = chatData;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, loading: loadingUser } = userLogin;
+
+  const participated = useSelector((state) => state.userDetails);
+  const { user: participatedUser, loading: loadingParticipated } = participated;
+
   useEffect(() => {
     if (chatId) {
       dispatch(getChatById(chatId));
     }
   }, [chatId, dispatch]);
 
-  if (loading) return <Loader />
+  useEffect(() => {
+    if (!!chat && !loading) {
+      dispatch(getUserDetails(chat.participatedUser))
+    }
+  }, [loading, chat])
+
+  if (loading || loadingUser || loadingParticipated) return <Loader />
 
   return (
     <div className="h-100">
     <h1 style={{paddingLeft: '16px'}}>Keskustelut</h1>
     <Row>
       <Col className="h-100 border border-dark">
-        {/* Lista chateista */}
         <ChatList />
       </Col>
       <Col className="h-100 d-inline-block border border-dark" md={8}>
-       <ChatContent chatMessages={chat?.messages} /> 
+       <ChatContent user={userInfo} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
       </Col>
       <Col className="bg-secondary border border-dark" md={2}>
-        {/* User Profile jonka kanssa chattailee */}
-        <ChatProfile />
+        <ChatProfile {...participatedUser} />
       </Col>
     </Row>
   </div>

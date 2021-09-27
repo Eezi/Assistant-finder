@@ -38,9 +38,7 @@ const App = () => {
           </Switch>
         </Container>
       </main>
-
-      <Footer />
-
+      {/*<Footer />*/}
     </Router>
   );
 };
