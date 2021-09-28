@@ -1,7 +1,7 @@
 import {
-  PRODUCT_LIST_FAIL,
-  PRODUCT_LIST_SUCCESS,
-  PRODUCT_LIST_REQUEST,
+  USER_CHATS_FAIL,
+  USER_CHATS_SUCCESS,
+  USER_CHATS_REQUEST,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
@@ -18,18 +18,16 @@ import {
   GET_CHAT_FAIL,
 } from "../constants/chatConstants.js";
 
-export const ProductListReducer = (state = { products: [] }, action) => {
+export const userChatsReducer = (state = { allUserChats: null }, action) => {
   switch (action.type) {
-    case PRODUCT_LIST_REQUEST:
-      return { loading: true, products: [] };
-    case PRODUCT_LIST_SUCCESS:
+    case USER_CHATS_REQUEST:
+      return { loading: true, allUserChats: null };
+    case USER_CHATS_SUCCESS:
       return {
         loading: false,
-        products: action.payload.products,
-        pages: action.payload.pages,
-        page: action.payload.page,
+        allUserChats: action.payload,
       };
-    case PRODUCT_LIST_FAIL:
+    case USER_CHATS_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

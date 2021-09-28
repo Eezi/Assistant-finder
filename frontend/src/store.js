@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
-  ProductListReducer,
+  userChatsReducer,
   productDeleteReducer,
   productReviewCreateRedcuer,
   chatCreateReducer,
@@ -19,7 +19,7 @@ import {
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
-  productList: ProductListReducer,
+  userChats: userChatsReducer,
   getChat: getChatByIdReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterRedcuer,
@@ -37,8 +37,13 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
+const userChatsFromStorage = localStorage.getItem("userChats")
+  ? JSON.parse(localStorage.getItem("userChats"))
+  : null;
+
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
+  userChats: { userAllChats: userChatsFromStorage }
 };
 
 const middleware = [thunk];

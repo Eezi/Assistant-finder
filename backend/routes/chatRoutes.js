@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import {
-  getProducts,
+  getUserChats,
   getChatById,
   deleteProduct,
   createChat,
@@ -11,7 +11,7 @@ import {
 } from "../controllers/chatController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getProducts).post(protect, createChat);
+router.route("/").get(protect, getUserChats).post(protect, createChat);
 //router.get("/top", getTopProducts);
 router
   .route("/:id")

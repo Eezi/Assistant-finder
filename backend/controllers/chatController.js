@@ -1,23 +1,16 @@
 import asyncHandler from "express-async-handler";
 import Chat from "../models/chatModel.js";
 
-const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 8;
-  const page = Number(req.query.pageNumber) || 1
-  const keyword = req.query.keyword ? {
-    name: {
-      $regex: req.query.keyword,
-      $options: 'i'
-    }
-  } : {}
-  const count = await Product.countDocuments({ ...keyword })
-  const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1));
+const getUserChats = asyncHandler(async (req, res) => {
+  const {
+    _id,
+  } = req.user;
+ const chats = await Chat.find({ $or: [{ participatedUser: _id },{ createdBy: _id }] });
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  res.status(201).json(chats);
 });
 
 const getChatById = asyncHandler(async (req, res) => {
-  console.log('req.params.id', req.params.id)
   const chat = await Chat.findById(req.params.id);
 
   if (chat) {
@@ -172,7 +165,7 @@ const getTopProducts = asyncHandler(async (req, res) => {
 });
 
 export {
-  getProducts,
+  getUserChats,
   getChatById,
   deleteProduct,
   createChat,

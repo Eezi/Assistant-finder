@@ -6,7 +6,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { getChatById } from '../actions/chatActions';
+import { getChatById, getUserChats } from '../actions/chatActions';
 import { getUserDetails } from '../actions/userActions';
 import { useSelector, useDispatch } from "react-redux";
 import ChatContent from "../components/Chat/ChatContent";
@@ -30,6 +30,7 @@ const ChatScreen = ({ match }) => {
       dispatch(getChatById(chatId));
     }
   }, [chatId, dispatch]);
+
 
   useEffect(() => {
     if (!!chat && !loading) {

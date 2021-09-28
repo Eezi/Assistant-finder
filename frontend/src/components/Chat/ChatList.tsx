@@ -1,6 +1,9 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
 import { Button, Row, Col } from 'react-bootstrap'
 import Avatar from './Avatar'
+import { getUserChats } from '../../actions/chatActions';
+import { useSelector, useDispatch } from "react-redux";
+import Loader from '../Loader';
 
 const users = [
   { name: 'Heini Kenkimäki' },
@@ -9,6 +12,17 @@ const users = [
   { name: 'Antti Äijö' },
 ]
 const ChatList: FC<{}> = () => {
+
+  // Tää setti varmaan screen componenttiin koska muuten vaikee saada participantsUsers???
+  const allChats = useSelector((state) => state.userChats);
+  const { allUserChats, loading: loadingChats } = allChats;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!allUserChats) {
+      dispatch(getUserChats());
+    }
+  }, [dispatch, allUserChats]);
 
   const getInitials = (name): string => {
   let initials = name.split(' ');
@@ -21,6 +35,8 @@ const ChatList: FC<{}> = () => {
 
   return initials.toUpperCase();
 }
+
+ if (loadingChats) return <Loader />;
 
     return (
         <Row className="justify-content-center">

@@ -44,7 +44,7 @@ const ChatContent = ({ chatMessages, user, participatedUser }) => {
         <ChatContainer>
           connected
           <Messages user={user} participatedUser={participatedUser} chatMessages={chatMessages} socket={socket} />
-          <MessageInput userId={user._id} socket={socket} />
+          <MessageInput userId={user?._id} socket={socket} />
         </ChatContainer>
       ) : (
         <div>Not Connected</div>
