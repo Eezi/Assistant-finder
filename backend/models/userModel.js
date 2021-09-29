@@ -18,7 +18,15 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    userType: {
+        type: String,
+        required: true
+    },
     description: {
+        type: String,
+        required: false
+    },
+    experience: {
         type: String,
         required: false
     },

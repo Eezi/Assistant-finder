@@ -4,6 +4,7 @@ import Avatar from './Avatar'
 import { getUserChats } from '../../actions/chatActions';
 import { useSelector, useDispatch } from "react-redux";
 import Loader from '../Loader';
+import { useHistory } from 'react-router-dom';
 
 const users = [
   { name: 'Heini Kenkimäki' },
@@ -17,6 +18,7 @@ const ChatList: FC<{}> = () => {
   const allChats = useSelector((state) => state.userChats);
   const { allUserChats, loading: loadingChats } = allChats;
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     if (!allUserChats) {
@@ -35,6 +37,9 @@ const ChatList: FC<{}> = () => {
 
   return initials.toUpperCase();
 }
+const handleClickChat = (id) => {
+  history.push(`/chats/${id}`)
+};
 
  if (loadingChats) return <Loader />;
 
@@ -48,10 +53,10 @@ const ChatList: FC<{}> = () => {
       </Col>
       <Col>
         <h6 className="mb-3">Keskustelut</h6>
-      {users.map(({name}) => (
-        <div className="my-2 d-flex boder border-secondary p-1" key={name}>
-        <Avatar initials={getInitials(name)} />
-        <small className="mt-2">{name}</small>
+      {allUserChats?.map((chat, index) => (
+        <div onClick={() => handleClickChat(chat._id)} className="my-2 d-flex boder border-secondary p-1" key={chat._id}>
+        {/*}<Avatar initials={getInitials(name)} />*/}
+        <small className="mt-2">{`chat-${index}`}</small>
         </div>
       ))}
       </Col>

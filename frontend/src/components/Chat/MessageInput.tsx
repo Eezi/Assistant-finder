@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
-const NewMessage = ({ socket, userId }) => {
+const NewMessage = ({ socket, userId, participatedUser }) => {
   const [value, setValue] = useState('');
   
   const submitForm = (e) => {
-    socket.emit('message', { message: value, userId });
+    socket.emit('message', { message: value, userId, participatedUser });
     setValue('');
   };
 

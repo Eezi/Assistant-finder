@@ -48,7 +48,7 @@ const createChat = asyncHandler(async (req, res) => {
     participatedUser,
   } = req.body;
 
-  const chatExists = await Chat.findOne({ $or: [ { createdBy }, { participatedUser }, { createdBy: participatedUser }, { participatedUser: createdBy }] });
+  const chatExists = await Chat.findOne({ createdBy, participatedUser });
 
   if (chatExists) {
     return res.status(201).json(chatExists);
@@ -100,7 +100,7 @@ const addNewMessage = asyncHandler(async(message) => {
   
   // Todo välitä tälle chatId jotta saadaan oikea chat 
 
-  const chat = await Chat.findById('614f4ec4976db14d9525e0a1')
+  const chat = await Chat.findById({ createdBy: message.userId, participatedUser: message.participatedUser });
 
   if (!chat.messages) {
     chat.messages = [];

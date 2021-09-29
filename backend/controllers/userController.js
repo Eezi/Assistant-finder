@@ -31,6 +31,8 @@ const registerUser = asyncHandler(async (req, res) => {
     description,
     phone,
     region,
+    experience,
+    userType,
   } = req.body;
 
   const userExists = await User.findOne({ email });
@@ -47,6 +49,8 @@ const registerUser = asyncHandler(async (req, res) => {
     description,
     phone,
     region,
+    experience,
+    userType,
   });
 
   if (user) {
@@ -59,6 +63,8 @@ const registerUser = asyncHandler(async (req, res) => {
       region: user.region,
       gender: user.gender,
       isAdmin: user.isAdmin,
+      experience: user.experience,
+      userType: user.userType,
       token: generateToken(user._id),
     });
   } else {

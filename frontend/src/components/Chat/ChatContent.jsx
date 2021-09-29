@@ -7,7 +7,7 @@ import Loader from "../Loader";
 import { useSelector } from "react-redux";
 import io from 'socket.io-client';
 
-const ChatContent = ({ chatMessages, user, participatedUser }) => {
+const ChatContent = ({ chatMessages, user, participatedUser, loading }) => {
   const [socket, setSocket] = useState(null);
   
   useEffect(() => {
@@ -15,6 +15,8 @@ const ChatContent = ({ chatMessages, user, participatedUser }) => {
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
+
+  if (loading) return <Loader />; 
 
     return (
         <div style={{ minHeight: '550px' }} className="px-2 py-3 mh-100">
@@ -44,7 +46,7 @@ const ChatContent = ({ chatMessages, user, participatedUser }) => {
         <ChatContainer>
           connected
           <Messages user={user} participatedUser={participatedUser} chatMessages={chatMessages} socket={socket} />
-          <MessageInput userId={user?._id} socket={socket} />
+          <MessageInput participatedUser={participatedUser?._id} userId={user?._id} socket={socket} />
         </ChatContainer>
       ) : (
         <div>Not Connected</div>

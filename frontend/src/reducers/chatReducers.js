@@ -16,6 +16,7 @@ import {
   GET_CHAT_REQUEST,
   GET_CHAT_SUCCESS,
   GET_CHAT_FAIL,
+  GET_CHAT_RESET,
 } from "../constants/chatConstants.js";
 
 export const userChatsReducer = (state = { allUserChats: null }, action) => {
@@ -85,6 +86,8 @@ export const getChatByIdReducer = (state = { chat: null }, action) => {
           return { loading: false, chat: action.payload }
       case GET_CHAT_FAIL:
           return { loading: false, error: action.payload };
+      case GET_CHAT_RESET:
+          return { chat: null }
       default:
           return state
   }

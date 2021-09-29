@@ -22,6 +22,7 @@ const RegisterScreen = ({ location, history }) => {
   const [gender, setGender] = useState("");
   const [region, setRegion] = useState("");
   const [description, setDescription] = useState("");
+  const [experience, setExperience] = useState("");
   const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
@@ -43,6 +44,7 @@ const RegisterScreen = ({ location, history }) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
+      console.log('user', userType, 'gender', gender)
     } else {
       const user = {
         name,
@@ -52,6 +54,8 @@ const RegisterScreen = ({ location, history }) => {
         region,
         description,
         phone,
+        userType,
+        experience,
       };
       dispatch(register(user));
     }
@@ -86,18 +90,18 @@ const RegisterScreen = ({ location, history }) => {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label className="d-block">Sukupuoli</Form.Label>
+          <Form.Label className="d-block">Asiakas vai avustaja?</Form.Label>
           <ButtonGroup>
             {userTypes.map((user, idx) => (
               <ToggleButton
                 key={idx}
-                id={`radio-${idx}`}
+                id={`radio-${user.key}`}
                 type="radio"
                 variant="success"
                 name="radio"
                 value={user.key}
                 checked={userType === user.key}
-                onChange={(e) => setGender(e.currentTarget.value)}
+                onChange={(e) => setUserType(e.currentTarget.value)}
               >
                 {user.label}
               </ToggleButton>
@@ -106,7 +110,7 @@ const RegisterScreen = ({ location, history }) => {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label className="d-block">Asiakas vai avustaja?</Form.Label>
+          <Form.Label className="d-block">Sukupuoli</Form.Label>
           <ButtonGroup>
             {genders.map((g, idx) => (
               <ToggleButton
@@ -155,6 +159,17 @@ const RegisterScreen = ({ location, history }) => {
             placeholder="Kerro tähän vähän itsestäsi"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId="description">
+          <Form.Label>Kokemus</Form.Label>
+          <Form.Control
+            type="text"
+          as="textarea"
+          placeholder="Kerro lyhyesti avustaja kokemuksestasi"
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
           ></Form.Control>
         </Form.Group>
 

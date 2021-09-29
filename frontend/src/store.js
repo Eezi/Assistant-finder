@@ -37,13 +37,9 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
-const userChatsFromStorage = localStorage.getItem("userChats")
-  ? JSON.parse(localStorage.getItem("userChats"))
-  : null;
 
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
-  userChats: { userAllChats: userChatsFromStorage }
 };
 
 const middleware = [thunk];

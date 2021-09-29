@@ -31,9 +31,8 @@ const ChatScreen = ({ match }) => {
     }
   }, [chatId, dispatch]);
 
-
   useEffect(() => {
-    if (!!chat && !loading) {
+    if (chat && !loading) {
       dispatch(getUserDetails(chat.participatedUser))
     }
   }, [loading, chat])
@@ -48,10 +47,10 @@ const ChatScreen = ({ match }) => {
         <ChatList />
       </Col>
       <Col className="h-100 d-inline-block border border-dark" md={8}>
-       <ChatContent user={userInfo} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
+       <ChatContent user={userInfo} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
       </Col>
       <Col className="bg-secondary border border-dark" md={2}>
-        <ChatProfile {...participatedUser} />
+        <ChatProfile loading={loading} {...participatedUser} />
       </Col>
     </Row>
   </div>

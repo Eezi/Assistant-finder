@@ -29,6 +29,7 @@ class Connection {
   handleMessage = async(value) => {
     const message = {
       createdBy: value.userId,
+      participatedUser: value.participatedUser,
       createdAt: new Date(),
       message: value.message,
     };

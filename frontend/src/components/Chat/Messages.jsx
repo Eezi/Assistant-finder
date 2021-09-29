@@ -5,11 +5,9 @@ import moment from 'moment';
 const Messages = ({ socket, chatMessages, participatedUser, user }) => {
   const [messages, setMessages] = useState([]);
   moment.locale('fi')
-
+  
   useEffect(() => {
-      if (chatMessages?.length > 0) {
-        setMessages(chatMessages);
-      }
+    setMessages(chatMessages);
   }, [chatMessages]);
 
   useEffect(() => {
@@ -41,7 +39,7 @@ const Messages = ({ socket, chatMessages, participatedUser, user }) => {
     if (userId === participatedUser?._id) {
       return participatedUser.name;
     }
-    return user.name;
+    return user?.name;
   };
 
   return (
