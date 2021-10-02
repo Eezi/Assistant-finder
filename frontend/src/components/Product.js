@@ -15,8 +15,6 @@ const UserCard = ({ cardInfo, userId }) => {
   const chatCreatedData = useSelector((state) => state.chatCreate);
   const { chat, loading } = chatCreatedData;
 
-  console.log('CHAAAAAT ', chat)
-
   useEffect(() => {
     if (!loading && chat) {
       history.push(`/chats/${chat?._id}`);

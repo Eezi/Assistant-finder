@@ -36,9 +36,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// Create new product
-// POST /api/products
-// Access admin
 const createChat = asyncHandler(async (req, res) => {
 
   const {
@@ -48,7 +45,12 @@ const createChat = asyncHandler(async (req, res) => {
     participatedUser,
   } = req.body;
 
-  const chatExists = await Chat.findOne({ createdBy, participatedUser });
+  const chatExists = await Chat.findOne({
+    $and: [
+        { $or: [ { participatedUser }, { participatedUser: createdBy } ] },
+        { $or: [ { createdBy }, { createdBy: participatedUser } ] }
+    ]
+  });
 
   if (chatExists) {
     return res.status(201).json(chatExists);
@@ -97,10 +99,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 const addNewMessage = asyncHandler(async(message) => {
-  
-  // Todo välitä tälle chatId jotta saadaan oikea chat 
-
-  const chat = await Chat.findById({ createdBy: message.userId, participatedUser: message.participatedUser });
+  console.log('message', message) 
+  const chat = await Chat.findById(message.chatId);
 
   if (!chat.messages) {
     chat.messages = [];

@@ -27,14 +27,7 @@ const App = () => {
             <Route path="/register" component={RegisterScreen} />
             <Route path="/profile" component={ProfileScreen} />
             <Route path="/chats/:id?" component={ChatScreen} />
-            <Route path="/search/:keyword" component={HomeScreen} exact />
-            <Route path="/page/:pageNumber" component={HomeScreen} exact />
-            <Route
-              path="/search/:keyword/page/:pageNumber"
-              component={HomeScreen}
-              exact
-            />
-            <Route exact path="/" component={HomeScreen} />
+            <Route path="/" component={HomeScreen} exact />
           </Switch>
         </Container>
       </main>

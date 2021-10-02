@@ -122,7 +122,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // Route GET /api/users
 // Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const {
+    _id,
+  } = req.user;
+  const users = await User.find({ _id: { $ne: _id } });
   res.json(users);
 });
 

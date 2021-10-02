@@ -47,7 +47,7 @@ const ChatScreen = ({ match }) => {
         <ChatList />
       </Col>
       <Col className="h-100 d-inline-block border border-dark" md={8}>
-       <ChatContent user={userInfo} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
+       <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
       </Col>
       <Col className="bg-secondary border border-dark" md={2}>
         <ChatProfile loading={loading} {...participatedUser} />
