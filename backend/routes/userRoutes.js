@@ -9,10 +9,11 @@ import {
   deleteUser,
   getUserById,
   updateUser,
+  getParticipatedUsers,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").post(registerUser).get(protect, getUsers);
+router.route("/").post(registerUser).get(protect, getUsers, getParticipatedUsers);
 router.post("/login", authUser);
 router
   .route("/profile")

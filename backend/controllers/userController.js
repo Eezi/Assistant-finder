@@ -182,6 +182,15 @@ const updateUser = asyncHandler(async (req, res) => {
   res.send("Success!");
 });
 
+const getParticipatedUsers = asyncHandler(async (req, res) => {
+  const {
+    ids,
+  } = req.ids;
+  console.log('ids', ids)
+  const users = await User.find({ _id: { $in: ids } });
+  res.json(users);
+});
+
 export {
   authUser,
   getUserProfile,
@@ -191,4 +200,5 @@ export {
   deleteUser,
   getUserById,
   updateUser,
+  getParticipatedUsers
 };

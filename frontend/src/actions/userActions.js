@@ -23,6 +23,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  PARTICIPATED_USERS_REQUEST,
+  PARTICIPATED_USERS_SUCCESS,
+  PARTICIPATED_USERS_FAIL,
 } from "../constants/userConstant";
 import axios from "axios";
 
@@ -287,6 +290,42 @@ export const updateUser = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getParticipatedUsers = (ids) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PARTICIPATED_USERS_REQUEST,
+    });
+
+    const { userLogin: { userInfo } } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      },
+    };
+    
+    const { data } = await axios.get(
+      `/api/users`,
+      config,
+      { ids },
+    );
+
+    dispatch({
+      type: PARTICIPATED_USERS_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+    dispatch({
+      type: PARTICIPATED_USERS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

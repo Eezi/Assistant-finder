@@ -25,6 +25,9 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_RESET,
+  PARTICIPATED_USERS_REQUEST,
+  PARTICIPATED_USERS_SUCCESS,
+  PARTICIPATED_USERS_FAIL,
 } from "../constants/userConstant";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -130,3 +133,16 @@ export const updateUserRedcuer = (state = { user: {} }, action) => {
       return state;
   }
 };
+
+export const participatedUsersReducer = (state = { participatedUsers: [] }, action) => {
+  switch (action.type) {
+      case PARTICIPATED_USERS_REQUEST:
+          return { ...state, loading: true, ...state }
+      case PARTICIPATED_USERS_SUCCESS:
+          return { loading: false, participatedUsers: action.payload }
+      case PARTICIPATED_USERS_FAIL:
+          return { loading: false, error: action.payload };
+      default:
+          return state
+  }
+}
