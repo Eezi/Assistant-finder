@@ -53,14 +53,9 @@ const getRightUserName = (userId) => {
 
  if (loadingChats || loadingUsers) return <Loader />;
 
-    return (
-        <Row className="justify-content-center">
-      {/*<Col className="text-center my-3">
-            <Button>
-            <i className="fas fa-plus mr-2"></i>    
-             Uusi 
-             </Button>
-      </Col>*/}
+   return (
+     <div className="min-h-75">
+      <Row className="justify-content-center">
       <Col>
         <h6 className="my-3 text-center">Keskustelut</h6>
       {allUserChats?.map((chat, index) => (
@@ -70,8 +65,9 @@ const getRightUserName = (userId) => {
         </div>
       ))}
       </Col>
-        </Row>
-    )
+     </Row>
+  </div>
+  )
 
 }
 

@@ -5,13 +5,15 @@ const NewMessage = ({ socket, userId, chatId }) => {
   const [value, setValue] = useState('');
   
   const submitForm = (e) => {
+    e.preventDefault();
     socket.emit('message', { message: value, userId, chatId});
     setValue('');
   };
 
   return (
+    <form onSubmit={submitForm}>
      <Form.Group as={Row} className="mt-4">
-        <Col md="10">
+    <Col md="10">
       <Form.Control
         autoFocus
         className="d-inline"
@@ -23,9 +25,10 @@ const NewMessage = ({ socket, userId, chatId }) => {
       />
       </Col>
       <Col md="2">
-      <Button onClick={submitForm}>Lähetä</Button>
+      <Button type="submit">Lähetä</Button>
     </Col>
       </Form.Group>
+</form>
   );
 };
 

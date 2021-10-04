@@ -6,6 +6,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import styled from 'styled-components';
 import { getChatById, getUserChats } from '../actions/chatActions';
 import { getUserDetails } from '../actions/userActions';
 import { useSelector, useDispatch } from "react-redux";
@@ -41,19 +42,24 @@ const ChatScreen = ({ match }) => {
 
   return (
     <div className="h-100">
-    <h1 style={{paddingLeft: '16px'}}>Keskustelut</h1>
-    <Row>
-      <Col className="h-100 border border-dark">
+    <Row >
+      <Col style={{ borderRadius: '5px', background: '#e8e8e8' }}>
         <ChatList />
       </Col>
-      <Col className="h-100 d-inline-block border border-dark" md={8}>
+      <MainCol style={{ background: '#e8e8e8' }} className="h-100 d-inline-block" md={8}>
        <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
-      </Col>
-      <Col className="bg-secondary border border-dark" md={2}>
+      </MainCol>
+      <Col style={{ borderRadius: '5px', background: '#e8e8e8' }} md={2}>
         <ChatProfile loading={loading} {...participatedUser} />
       </Col>
     </Row>
   </div>
   );
 };
+
+const MainCol = styled(Col)`
+border-left: 2px solid #a1a1a1;
+border-right: 2px solid #a1a1a1;
+`;
+
 export default ChatScreen;
