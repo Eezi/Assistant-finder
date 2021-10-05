@@ -6,6 +6,7 @@ import { getParticipatedUsers } from '../../actions/userActions';
 import { useSelector, useDispatch } from "react-redux";
 import Loader from '../Loader';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
 const ChatList: FC<{}> = () => {
   const allChats = useSelector((state) => state.userChats);
@@ -29,16 +30,17 @@ const ChatList: FC<{}> = () => {
 
   }, [allUserChats, dispatch]);
 
-  const getInitials = (name): string => {
-  let initials = name.split(' ');
+  const getInitials = (userId): string => {
+  const name = participatedUsers.find((user) => user._id === userId)?.name;
+  let initials = name?.split(' ');
 
-  if(initials.length > 1) {
+  if(initials?.length > 1) {
     initials = initials.shift().charAt(0) + initials.pop().charAt(0);
   } else {
-    initials = name.substring(0, 2);
+    initials = name?.substring(0, 2);
   }
 
-  return initials.toUpperCase();
+  return initials?.toUpperCase();
 }
 const handleClickChat = (id) => {
   history.push(`/chats/${id}`)
@@ -59,10 +61,10 @@ const getRightUserName = (userId) => {
       <Col>
         <h6 className="my-3 text-center">Keskustelut</h6>
       {allUserChats?.map((chat, index) => (
-        <div onClick={() => handleClickChat(chat._id)} className="my-2 d-flex boder border-secondary p-1" key={chat._id}>
-        {/*}<Avatar initials={getInitials(name)} />*/}
+        <ChatItem onClick={() => handleClickChat(chat._id)} className="my-2 d-flex border-bottom border-dark" key={chat._id}>
+        <Avatar initials={getInitials(chat.participatedUser)} />
         {getRightUserName(chat.participatedUser)}
-        </div>
+        </ChatItem>
       ))}
       </Col>
      </Row>
@@ -70,5 +72,12 @@ const getRightUserName = (userId) => {
   )
 
 }
+
+const ChatItem = styled.div`
+    width: 160px;
+    &:hover {
+      cursor: pointer;
+    }
+`;
 
 export default ChatList;

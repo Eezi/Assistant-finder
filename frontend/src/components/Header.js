@@ -17,7 +17,7 @@ const Header = () => {
   };
   return (
 <header>
-      <Navbar style={{padding: '.7rem 1rem', background: '#222629'}} variant='dark' expand='lg' collapseOnSelect>
+      <Navbar className="mb-3" style={{padding: '.7rem 1rem', background: '#222629'}} variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>Assistant-Finder</Navbar.Brand>
@@ -26,11 +26,13 @@ const Header = () => {
           <Navbar.Collapse id='basic-navbar-nav'>
             {/*<Route render={({ history }) => <SearchBox history={history} />} />*/}
             <Nav className='ml-auto'>
+              {userInfo && (
               <LinkContainer to='/chats'>
                 <Nav.Link>
                   <i className='fas fa-comments'></i> Keskustelut
                 </Nav.Link>
               </LinkContainer>
+              )}
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id='username'>
                   <LinkContainer to='/profile'>

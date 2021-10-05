@@ -96,9 +96,8 @@ const RegisterScreen = ({ location, history }) => {
               <ToggleButton
                 key={idx}
                 id={`radio-${user.key}`}
+                variant="warning"
                 type="radio"
-                variant="success"
-                name="radio"
                 value={user.key}
                 checked={userType === user.key}
                 onChange={(e) => setUserType(e.currentTarget.value)}
@@ -117,8 +116,7 @@ const RegisterScreen = ({ location, history }) => {
                 key={idx}
                 id={`radio-${idx}`}
                 type="radio"
-                variant="success"
-                name="radio"
+                variant="info"
                 value={g.key}
                 checked={gender === g.key}
                 onChange={(e) => setGender(e.currentTarget.value)}

@@ -9,7 +9,6 @@ const Messages = ({ socket, chatMessages, participatedUser, user }) => {
   
   useEffect(() => {
     setMessages(chatMessages);
-  messageRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 
   useEffect(() => {
@@ -44,11 +43,20 @@ const Messages = ({ socket, chatMessages, participatedUser, user }) => {
     return user?.name;
   };
 
+  const scrollBottomOfChat = () => {
+    const scroll = messageRef.current.scrollHeight - messageRef.current.clientHeight;
+    messageRef.current.scrollTo(0, scroll);
+  };
+
+  useEffect(() => {
+    scrollBottomOfChat()
+   }, [messages]);
+
   return (
-    <MessageList>
+    <MessageList ref={messageRef}>
       {messages
-        .sort((a, b) => a.time - b.time)
-        .map(({ createdAt, message, createdBy }) => (
+        ?.sort((a, b) => a.time - b.time)
+        ?.map(({ createdAt, message, createdBy }) => (
           <MessageContainer
             className="my-3 mr-4"
             isCurrentUser={user?._id === createdBy}
@@ -60,7 +68,6 @@ const Messages = ({ socket, chatMessages, participatedUser, user }) => {
           </MessageContainer>
         ))
       }
-      <div ref={messageRef} />
     </MessageList>
   );
 }

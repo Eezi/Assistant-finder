@@ -15,9 +15,8 @@ import UserEditScreen from "./screens/UserEditScreen";
 const App = () => {
   return (
     <Router>
+      <main className="vh-100">
       <Header />
-
-      <main className="py-3 vh-100">
         <Container>
           <Switch>
             <Route path="/product/:id" component={ProductScreen} />

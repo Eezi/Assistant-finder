@@ -25,7 +25,9 @@ const NewMessage = ({ socket, userId, chatId }) => {
       />
       </Col>
       <Col md="2">
-      <Button type="submit">Lähetä</Button>
+      <Button type="submit">Lähetä
+      <i className="fa-solid fa-paper-plane-top"></i>
+      </Button>
     </Col>
       </Form.Group>
 </form>
