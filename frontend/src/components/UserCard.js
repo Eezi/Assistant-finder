@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { createChat } from "../actions/chatActions";
 
 const UserCard = ({ cardInfo, userId }) => {
-  const { description, name, phone, email, gender, region, _id } = cardInfo;
+  const { description, name, phone, email, gender, region, _id, userType } = cardInfo;
   const dispatch = useDispatch();
   const history = useHistory();
-
+  console.log('userType', userType)
   const chatCreatedData = useSelector((state) => state.chatCreate);
   const { chat, loading } = chatCreatedData;
 
@@ -27,6 +27,10 @@ const UserCard = ({ cardInfo, userId }) => {
     return "Muu";
   };
 
+  const checkUserType = () => {
+    if (userType === "customer") return "Asiakas";
+    return "Avustaja";
+  };
 
   const handleCreateChat = () => {
     const chat = {
@@ -43,6 +47,11 @@ const UserCard = ({ cardInfo, userId }) => {
     <StyledCard style={{ width: "20rem" }} className="text-light">
       <Card.Body>
         <Card.Title className="text-center mb-4">{name}</Card.Title>
+        <Form.Group>
+          <Form.Label className="text-muted">Käyttäjä tyyppi</Form.Label>
+          <p>{checkUserType()}</p>
+        </Form.Group>
+        <Hr />
         <Form.Group>
           <Form.Label className="text-muted">Puhelinnumero</Form.Label>
           <p>{phone}</p>

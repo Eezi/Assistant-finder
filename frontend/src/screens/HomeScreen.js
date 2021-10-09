@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import UserCard from "../components/Product";
+import UserCard from "../components/UserCard";
 import { getUserList } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";

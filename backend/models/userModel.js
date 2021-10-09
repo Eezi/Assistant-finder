@@ -8,15 +8,15 @@ const userSchema = mongoose.Schema({
     },
     phone: {
         type: String,
-        required: false
+        required: true,
     },
     gender: {
         type: String,
-        required: true
+        required: false,
     },
     region: {
         type: String,
-        required: true
+        required: true,
     },
     userType: {
         type: String,

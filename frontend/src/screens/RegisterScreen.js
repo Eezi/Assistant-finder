@@ -8,6 +8,7 @@ import {
   ToggleButton,
   ButtonGroup,
 } from "react-bootstrap";
+import styled from 'styled-components';
 import { useDispatch, useSelector } from "react-redux";
 import { regions } from '../config/config';
 import Message from "../components/Message";
@@ -17,16 +18,8 @@ import { register } from "../actions/userActions";
 import { genders, userTypes } from "../config/config";
 
 const RegisterScreen = ({ location, history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [region, setRegion] = useState("");
-  const [description, setDescription] = useState("");
-  const [experience, setExperience] = useState("");
-  const [phone, setPhone] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
-  const [userType, setUserType] = useState("");
+  const [form, setForm] = useState({});
+  const [ errors, setErrors ] = useState({})
   const [message, setMessage] = useState(null);
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -40,22 +33,47 @@ const RegisterScreen = ({ location, history }) => {
     }
   }, [history, userInfo, redirect]);
 
+  const findFormErrors = () => {
+    const newErrors = {}
+    if ( !form.name || form.name === '' ) newErrors.name = 'Nimi ei voi olla tyhjä'
+    if ( !form.phone || form.phone === '' ) newErrors.phone = 'Puhelinnumero pitää täyttää'
+    if ( !form.email || form.email === '' ) newErrors.email = 'Sähköposti pitää täyttää'
+    if ( !form.region || form.region === '' ) newErrors.region = 'Paikkakunta pitää valita'
+    if ( !form.userType || form.userType === '' ) newErrors.userType = 'Käyttäjätyyppi pitää valita'
+    if ( !form.password || form.password === '' ) newErrors.password = 'Salasana puuttuu'
+    if ( !form.confirmPassword || form.confirmPassword === '' ) newErrors.confirmPassword = 'Vahvistussalasana puuttuu'
+
+    return newErrors
+  };
+
+  const handleFields = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value,
+    });
+  };
+
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-      console.log('user', userType, 'gender', gender)
+    const newErrors = findFormErrors()
+    if ( Object.keys(newErrors).length > 0 ) {
+      return setErrors(newErrors);
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setMessage("Salasanat eivät täsmää");
     } else {
       const user = {
-        name,
-        email,
-        password,
-        gender,
-        region,
-        description,
-        phone,
-        userType,
-        experience,
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        gender: form.gender,
+        region: form.region,
+        description: form.description,
+        phone: form.phone,
+        userType: form.userType,
+        experience: form.experience,
       };
       dispatch(register(user));
     }
@@ -63,80 +81,93 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h1>Rekisteröityminen</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
-      <Form onSubmit={submitHandler}>
+      <Form>
         <Form.Group controlId="name">
-          {" "}
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Nimi</Form.Label>
           <Form.Control
             type="name"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
+            placeholder="Koko nimesi"
+            value={form.name}
+            onChange={({ currentTarget }) => handleFields('name', currentTarget.value)}
+            isInvalid={!!errors.name}
+        />
+          <Form.Control.Feedback type='invalid'>
+            { errors.name }
+        </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Email Adress</Form.Label>
+          <Form.Label>Sähköposti</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={form.email}
+            placeholder="Sähköpostisi"
+            isInvalid={!!errors.email}
+            onChange={({ currentTarget }) => handleFields('email', currentTarget.value)}
           ></Form.Control>
+          <Form.Control.Feedback type='invalid'>
+            { errors.email }
+        </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group>
           <Form.Label className="d-block">Asiakas vai avustaja?</Form.Label>
           <ButtonGroup>
             {userTypes.map((user, idx) => (
-              <ToggleButton
+              <CheckButton
                 key={idx}
                 id={`radio-${user.key}`}
-                variant="warning"
-                type="radio"
                 value={user.key}
-                checked={userType === user.key}
-                onChange={(e) => setUserType(e.currentTarget.value)}
+                isInvalid={!!errors.userType}
+                toggled={form.userType === user.key} 
+                onClick={({ target }) => handleFields('userType', target.value)}
               >
                 {user.label}
-              </ToggleButton>
+              </CheckButton>
             ))}
           </ButtonGroup>
+              {!!errors.userType && (
+              <p style={{ fontSize: '.7rem', color: '#d9534f' }} className="mt-1">
+                { errors.userType }
+               </p>
+              )}
         </Form.Group>
 
         <Form.Group>
           <Form.Label className="d-block">Sukupuoli</Form.Label>
           <ButtonGroup>
             {genders.map((g, idx) => (
-              <ToggleButton
+              <CheckButton
                 key={idx}
                 id={`radio-${idx}`}
-                type="radio"
-                variant="info"
                 value={g.key}
-                checked={gender === g.key}
-                onChange={(e) => setGender(e.currentTarget.value)}
+                toggled={form.gender === g.key}
+                onClick={({ target }) => handleFields('gender', target.value)}
               >
                 {g.label}
-              </ToggleButton>
+              </CheckButton>
             ))}
           </ButtonGroup>
         </Form.Group>
 
         <Form.Group controlId="region">
-          <Form.Label>Paikkakunta</Form.Label>
+          <Form.Label>Maakunta</Form.Label>
           <Form.Control
             as="select"
-            onChange={(e) => setRegion(e.target.value)}
+            isInvalid={!!errors.region}
+            onChange={({ target }) => handleFields('region', target.value)}
           >
             {regions.map((r) => (
               <option value={r} key={r}>{r}</option>
             ))}
             </Form.Control>
+          <Form.Control.Feedback type='invalid'>
+            { errors.region }
+        </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="phone">
@@ -144,9 +175,13 @@ const RegisterScreen = ({ location, history }) => {
           <Form.Control
             type="number"
             placeholder="Kirjoita puhelinnumero"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={form.phone}
+            onChange={({ currentTarget }) => handleFields('phone', currentTarget.value)}
+            isInvalid={!!errors.phone}
           ></Form.Control>
+          <Form.Control.Feedback type="invalid">
+            {errors.phone}
+            </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="description">
@@ -155,8 +190,8 @@ const RegisterScreen = ({ location, history }) => {
             type="text"
             as="textarea"
             placeholder="Kerro tähän vähän itsestäsi"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={form.description}
+            onChange={({ currentTarget }) => handleFields('description', currentTarget.value)}
           ></Form.Control>
         </Form.Group>
 
@@ -164,48 +199,73 @@ const RegisterScreen = ({ location, history }) => {
           <Form.Label>Kokemus</Form.Label>
           <Form.Control
             type="text"
-          as="textarea"
-          placeholder="Kerro lyhyesti avustaja kokemuksestasi"
-            value={experience}
-            onChange={(e) => setExperience(e.target.value)}
+            as="textarea"
+            placeholder="Kerro lyhyesti avustaja kokemuksestasi"
+            value={form.experience}
+            onChange={({ currentTarget }) => handleFields('experience', currentTarget.value)}
           ></Form.Control>
         </Form.Group>
 
         <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Salasana</Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
+            required
+            value={form.password}
+            placeholder="Salasanasi"
+            onChange={({ currentTarget }) => handleFields('password', currentTarget.value)}
+            isInvalid={!!errors.password}
+        />
+          <Form.Control.Feedback type='invalid'>
+            { errors.password }
+        </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="confirmPassword">
-          <Form.Label>Confirm password</Form.Label>
+          <Form.Label>Vahvista salasanasi</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
+            required
+            placeholder="Vahvista salasanasi"
+            value={form.confirmPassword}
+            onChange={({ currentTarget }) => handleFields('confirmPassword', currentTarget.value)}
+            isInvalid={!!errors.confirmPassword}
+        />
+          <Form.Control.Feedback type='invalid'>
+            { errors.confirmPassword }
+        </Form.Control.Feedback>
         </Form.Group>
 
-        <Button type="submit" varian="primary">
-          Register
+        <Button onClick={submitHandler} varian="primary">
+          Rekiteröidy
         </Button>
       </Form>
 
       <Row className="py-3">
         <Col>
-          Have an Account?{" "}
+          Onko sinulla jo tili?{" "}
           <Link to={redirect ? `login?redirect=${redirect}` : "/login"}>
-            Login
+            Kirjaudu täältä
           </Link>
         </Col>
       </Row>
     </FormContainer>
   );
 };
+
+const CheckButton = styled(Button)`
+  background-color: ${props => props.toggled ? '#83c5be' : '#edf6f9'};
+  color: #2b2d42;
+
+  &:hover {
+  background-color: #83c5be;
+  }
+  &:active {
+    outline: none !important;
+    outline-offset: none !important;
+    background: transparent !important;
+  }
+`;
 
 export default RegisterScreen;
