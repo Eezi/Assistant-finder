@@ -20,7 +20,7 @@ const ChatContent = ({ chatMessages, user, participatedUser, loading, chatId }) 
   if (loading) return <Loader />; 
 
     return (
-        <div style={{ minHeight: '550px' }} className="px-2 py-3 mh-100">
+        <div style={{ minHeight: '550px',display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="px-2 py-3 mh-100">
           <div className="blocks">
             <div className="current-chatting-user">
               <h5>{participatedUser?.name}</h5>

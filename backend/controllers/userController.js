@@ -84,6 +84,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      region: user.region,
+      description: user.description,
+      experience: user.experience,
+      gender: user.gender,
+      userType: user.userType,
+      phone: user.phone,
     });
   } else {
     res.status(404);
@@ -98,12 +104,14 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
+    const { user } = req;
     (user.name = req.body.name || user.name),
       (user.email = req.body.email || user.email);
     if (req.body.password) {
       user.password = req.body.password;
     }
-    const updatedUser = await user.save();
+    console.log('usereerr', user)
+    const updatedUser = await User.updateOne({ _id: user._id }, { user });
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
