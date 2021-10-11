@@ -26,7 +26,7 @@ const ChatProfile: FC<User> = ({ description, name, phone, email, region, userTy
               <h6 className="d-inline mr-2">Lisätiedot</h6>
               <i className="fa fa-angle-down"></i>
             <Collapse in={open}>
-        <div id="example-collapse-text">
+        <div style={{ wordWrap: 'break-word' }} id="example-collapse-text">
           {description}
         </div>
       </Collapse>

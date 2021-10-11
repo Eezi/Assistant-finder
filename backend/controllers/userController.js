@@ -104,19 +104,30 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
-    const { user } = req;
+    const { user, body } = req;
     (user.name = req.body.name || user.name),
       (user.email = req.body.email || user.email);
     if (req.body.password) {
       user.password = req.body.password;
+      user.region = body.region;
+      user.phone = body.phone;
+      user.experience = body.experience;
+      user.description = body.description;
+      user.gender = body.gender;
+      user.userType = body.userType;
     }
-    console.log('usereerr', user)
-    const updatedUser = await User.updateOne({ _id: user._id }, { user });
+    const updatedUser = await user.save();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      gender: updatedUser.gender,
+      userType: updatedUser.userType,
+      experience: updatedUser.experience,
+      description: updatedUser.description,
+      phone: updatedUser.phone,
+      region: updatedUser.region,
       token: generateToken(updatedUser._id),
     });
   } else {

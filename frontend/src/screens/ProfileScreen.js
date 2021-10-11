@@ -41,7 +41,8 @@ const ProfileScreen = ({ location, history }) => {
     e.preventDefault();
     const newErrors = checkFormValues(form);
     if (Object.keys(newErrors).length > 0) return;
-    dispatch(updateUserProfile(form));
+    const { confirmPassword, ...rest } = form;
+    dispatch(updateUserProfile({ ...rest }));
   };
 
   return (

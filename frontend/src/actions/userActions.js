@@ -28,6 +28,7 @@ import {
   PARTICIPATED_USERS_FAIL,
 } from "../constants/userConstant";
 import axios from "axios";
+import { USER_CHATS_RESET, GET_CHAT_RESET } from "../constants/chatConstants";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -68,6 +69,8 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGIN_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: USER_CHATS_RESET });
+  dispatch({ type: GET_CHAT_RESET });
   dispatch({ type: USER_LIST_RESET });
 };
 
@@ -161,14 +164,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       },
     };
-    console.log('user', user)
 
     const { data } = await axios.put(
       "/api/users/profile",
       user,
       config
     );
-    console.log('data', data)
 
     dispatch({ type: USER_UPDATE_PROFILE_SUCCESS,
       payload: data,

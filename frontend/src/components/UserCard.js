@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card, Form, Button } from "react-bootstrap";
 import Raiting from "./Raiting";
@@ -10,16 +10,17 @@ import { createChat } from "../actions/chatActions";
 const UserCard = ({ cardInfo, userId }) => {
   const { description, name, phone, email, gender, region, _id, userType } = cardInfo;
   const dispatch = useDispatch();
+  const [allowPush, setAllowPush] = useState(false);
   const history = useHistory();
-  console.log('userType', userType)
   const chatCreatedData = useSelector((state) => state.chatCreate);
   const { chat, loading } = chatCreatedData;
 
   useEffect(() => {
-    if (!loading && chat) {
+    if (!loading && chat && allowPush) {
       history.push(`/chats/${chat?._id}`);
+      setAllowPush(false);
     }
-  }, [chat, loading])
+  }, [chat, loading]);
 
   const checkGender = () => {
     if (gender === "male") return "Mies";
@@ -41,6 +42,7 @@ const UserCard = ({ cardInfo, userId }) => {
     };
 
     dispatch(createChat(chat));
+    setAllowPush(true);
   };
 
   return (
