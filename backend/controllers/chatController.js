@@ -99,7 +99,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 const addNewMessage = asyncHandler(async(message) => {
-  console.log('message', message) 
+  message.receiverHasRead = false;
   const chat = await Chat.findById(message.chatId);
 
   if (!chat.messages) {

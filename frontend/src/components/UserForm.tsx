@@ -1,9 +1,14 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, useState } from 'react'
 import {
   Form,
   ButtonGroup,
   Button,
+  Col,
+  Row,
 } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 import styled from 'styled-components';
 import { genders, userTypes, regions } from "../config/config";
 import { UserFormTypes } from '../types';
@@ -12,6 +17,7 @@ interface UserFormProps {
     form: UserFormTypes,
     setForm: (form: UserFormTypes) => void,
     errors: UserFormTypes,
+    loggedUser?: boolean,
 }
 
 const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement => {
@@ -22,6 +28,7 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
       [field]: value,
     });
   };
+  console.log('form', form)
 
     return (
         <Form>
@@ -144,6 +151,30 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
             onChange={({ currentTarget }) => handleFields('experience', currentTarget.value)}
           ></Form.Control>
         </Form.Group>
+
+        <Row>
+        <Form.Group as={Col}>
+          <Form.Label>Kiireellinen aika alkaa</Form.Label>
+          <DatePicker 
+          selected={form?.busyStartDate || new Date()} 
+          dateFormat="dd.MM.yyy"
+          locale="fi"
+          name="busyStartDate"
+          className="form-control"
+          onChange={(date) => handleFields('busyStartDate', date)} />
+        </Form.Group>
+
+        <Form.Group as={Col}>
+          <Form.Label>Kiireellinen aika loppuu</Form.Label>
+          <DatePicker 
+          dateFormat="dd.MM.yyy"
+          locale="fi"
+          name="busyEndDate"
+          className="form-control"
+          selected={form?.busyEndDate || new Date()} 
+          onChange={(date) => handleFields('busyEndDate', date)} />
+        </Form.Group>
+        </Row>
 
         <Form.Group controlId="password">
           <Form.Label>Salasana</Form.Label>

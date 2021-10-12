@@ -90,6 +90,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       gender: user.gender,
       userType: user.userType,
       phone: user.phone,
+      busyStartDate: user?.busyStartDate,
+      busyEndDate: user?.busyEndDate,
     });
   } else {
     res.status(404);
@@ -115,6 +117,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       user.description = body.description;
       user.gender = body.gender;
       user.userType = body.userType;
+      user.busyStartDate = body?.busyStartDate;
+      user.busyEndDate = body?.busyEndDate;
     }
     const updatedUser = await user.save();
     res.json({
@@ -128,6 +132,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       description: updatedUser.description,
       phone: updatedUser.phone,
       region: updatedUser.region,
+      busyStartDate: updatedUser?.busyStartDate,
+      busyEndDate: updatedUser?.busyEndDate,
       token: generateToken(updatedUser._id),
     });
   } else {
@@ -143,8 +149,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const {
     _id,
+    userType,
   } = req.user;
-  const users = await User.find({ _id: { $ne: _id } });
+  console.log('user', userType)
+  const users = await User.find({ _id: { $ne: _id }, userType: userType === 'customer' ? 'assistant' : 'customer' });
+  console.log('users', users)
   res.json(users);
 });
 

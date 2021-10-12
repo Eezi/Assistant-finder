@@ -14,6 +14,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: false,
     },
+    busyStartDate: {
+        type: Date,
+        required: false,
+    },
+    busyEndDate: {
+        type: Date,
+        required: false,
+    },
     region: {
         type: String,
         required: true,

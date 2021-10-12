@@ -18,6 +18,7 @@ const chatSchema = mongoose.Schema({
             createdBy: { type: String, required: true },
             createdAt: { type: Date, required: true },
             message: { type: String, required: true },
+            receiverHasRead: { type: Boolean, required: false },
         }
     ],
 }, {

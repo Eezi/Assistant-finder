@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Row, Col, ButtonGroup } from "react-bootstrap";
+import { Button, Row, Col, Form, ButtonGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -52,8 +52,7 @@ const ProfileScreen = ({ location, history }) => {
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
-
-        <UserForm errors={errors} form={form} setForm={setForm} />
+        <UserForm loggedUser={!!userInfo} errors={errors} form={form} setForm={setForm} />
 
         <Button onClick={submitHandler} varian="primary">
           Päivitä tiedot

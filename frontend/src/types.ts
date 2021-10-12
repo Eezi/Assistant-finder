@@ -7,6 +7,8 @@ export interface UserFormTypes {
     userType: string,
     experience?: string,
     description?: string,
+    busyStartDate?: string,
+    busyEndDate?: string,
     password: string,
     confirmPassword: string,
 }
