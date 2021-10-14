@@ -82,9 +82,6 @@ const MessageList = styled.div`
   align-items: flex-end;
 
 `;
-/*
-
-*/
 
 const MessageContainer = styled.div`
   background-color: ${props => props.isCurrentUser ? '#4462ff' : '#fff'};
@@ -122,13 +119,6 @@ const MessageContainer = styled.div`
 }
 
 `;
-/*
-
-    display: flex;
-    flex-direction: row;
-    padding: 0.5rem;
-    border-bottom: 1px solid #eeeeee;
-*/
   
 const DateMark = styled.div`
     font-size: 0.625rem;

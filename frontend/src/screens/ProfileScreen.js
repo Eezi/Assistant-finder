@@ -10,6 +10,7 @@ import { useFormValidation } from '../utils/formValidation'
 
 const ProfileScreen = ({ location, history }) => {
   const [form, setForm] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
   const [message, setMessage] = useState(null);
   const { checkFormValues, errors } = useFormValidation();
 
@@ -32,7 +33,9 @@ const ProfileScreen = ({ location, history }) => {
         dispatch(getUserDetails('profile'));
       } else {
         const { _id, token, ...rest } = user;
-        setForm({ ...rest });
+        if (Object.keys(form).length <= 0) {
+          setForm({ ...rest });
+        }
       }
     }
   }, [dispatch, history, userInfo, user, success]);
@@ -43,17 +46,26 @@ const ProfileScreen = ({ location, history }) => {
     if (Object.keys(newErrors).length > 0) return;
     const { confirmPassword, ...rest } = form;
     dispatch(updateUserProfile({ ...rest }));
+    handleSuccess();
   };
 
+  const handleSuccess = () => {
+    setSuccessMessage('Tiedot pävitetty!');
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 5000);
+  }
+
   return (
-    <Row className="justify-content-center">
+    <Row className="justify-content-center mb-4">
       <Col md={6}>
         <h1>Käyttäjän profiili</h1>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
         <UserForm loggedUser={!!userInfo} errors={errors} form={form} setForm={setForm} />
-
+        <p style={{ color: 'green' }}>{successMessage}</p>
         <Button onClick={submitHandler} varian="primary">
           Päivitä tiedot
         </Button>

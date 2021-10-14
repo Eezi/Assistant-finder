@@ -28,7 +28,6 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
       [field]: value,
     });
   };
-  console.log('form', form)
 
     return (
         <Form>
@@ -156,7 +155,7 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
         <Form.Group as={Col}>
           <Form.Label>Kiireellinen aika alkaa</Form.Label>
           <DatePicker 
-          selected={form?.busyStartDate || new Date()} 
+          selected={moment(form?.busyStartDate).toDate()} 
           dateFormat="dd.MM.yyy"
           locale="fi"
           name="busyStartDate"
@@ -171,7 +170,7 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
           locale="fi"
           name="busyEndDate"
           className="form-control"
-          selected={form?.busyEndDate || new Date()} 
+          selected={moment(form?.busyEndDate).toDate()} 
           onChange={(date) => handleFields('busyEndDate', date)} />
         </Form.Group>
         </Row>
