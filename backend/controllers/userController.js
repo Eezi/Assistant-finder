@@ -12,6 +12,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      userType: user.userType,
       token: generateToken(user._id),
     });
   } else {
@@ -151,9 +152,7 @@ const getUsers = asyncHandler(async (req, res) => {
     _id,
     userType,
   } = req.user;
-  console.log('user', userType)
   const users = await User.find({ _id: { $ne: _id }, userType: userType === 'customer' ? 'assistant' : 'customer' });
-  console.log('users', users)
   res.json(users);
 });
 
@@ -211,11 +210,9 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const getParticipatedUsers = asyncHandler(async (req, res) => {
-  const {
-    ids,
-  } = req.ids;
-  console.log('ids', ids)
-  const users = await User.find({ _id: { $in: ids } });
+  const { ids } = req.headers;
+  const allIds = ids.split(',');
+  const users = await User.find({ _id: { $in: allIds } });
   res.json(users);
 });
 

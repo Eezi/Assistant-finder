@@ -84,7 +84,7 @@ const MessageList = styled.div`
 `;
 
 const MessageContainer = styled.div`
-  background-color: ${props => props.isCurrentUser ? '#4462ff' : '#fff'};
+  background-color: ${props => props.isCurrentUser ? '#4462ff' : '#e8e8e8'};
   color: ${props => props.isCurrentUser ? '#fff' : '#1c1c1c'};
   padding: 15px;
   align-self: ${props => props.isCurrentUser ? 'flex-end' : 'flex-start'};

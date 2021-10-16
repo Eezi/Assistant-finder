@@ -26,7 +26,7 @@ const HomeScreen = ({ match, history }) => {
   return (
     <>
       <Meta />
-      <H1>Käyttäjät</H1>
+      <H1>{userInfo?.userType === 'customer' ? 'Avustajat' : 'Asiakkaat'}</H1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -56,7 +56,7 @@ const Div = styled.div`
      max-width: 900px; 
 `;*/
 
-const H1 = styled.h1`
+const H1 = styled.h3`
   width: 100%;
 
   z-index: 2;

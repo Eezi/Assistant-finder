@@ -34,32 +34,38 @@ const ChatScreen = ({ match }) => {
 
   useEffect(() => {
     if (chat && !loading) {
-      dispatch(getUserDetails(chat.participatedUser))
+      const rightId = chat.participatedUser === userInfo._id ? chat.createdBy : chat.participatedUser;
+      dispatch(getUserDetails(rightId));
     }
   }, [loading, chat])
 
   if (loading || loadingUser || loadingParticipated) return <Loader />
 
   return (
-    <div className="h-100">
+    <Div className="h-100">
     <Row >
-      <Col style={{ borderRadius: '5px', background: '#e8e8e8' }}>
-        <ChatList />
+      <Col style={{ borderTopLeftRadius: '5px', borderBottomLeftRadius: '5px', background: '#1f223d' }}>
+        <ChatList userId={userInfo?._id} />
       </Col>
-      <MainCol style={{ background: '#e8e8e8' }} className="h-100 d-inline-block" md={8}>
+      <MainCol style={{ background: '#fff' }} className="h-100 d-inline-block" md={7}>
        <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
       </MainCol>
-      <Col style={{ borderRadius: '5px', background: '#e8e8e8' }} md={2}>
+      <Col style={{ borderRadius: '5px', background: '#fff' }} md={3}>
         <ChatProfile loading={loading} {...participatedUser} />
       </Col>
     </Row>
-  </div>
+  </Div>
   );
 };
 
 const MainCol = styled(Col)`
-border-left: 2px solid #a1a1a1;
 border-right: 2px solid #a1a1a1;
+`;
+//box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+
+//box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+const Div = styled.div`
+box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
 `;
 
 export default ChatScreen;

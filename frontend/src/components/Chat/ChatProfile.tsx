@@ -13,10 +13,9 @@ interface User {
 const ChatProfile: FC<User> = ({ description, name, phone, email, region, userType }) => {
     const [open, setOpen] = useState(false)
     return (
-        <div className="container-fluid min-h-75 text-center p-2">
-          <div className="">
+        <div style={{ wordWrap: 'break-word' }} className="container-fluid min-h-75 text-center p-1">
+          <div className="pt-2">
             <h5>{name}</h5>
-            <p>{userType === 'customer' ? 'Asiakas' : 'Avustaja'}</p>
             <p>{email}</p>
             <p>{phone}</p>
             <p>{region}</p>
@@ -26,7 +25,7 @@ const ChatProfile: FC<User> = ({ description, name, phone, email, region, userTy
               <h6 className="d-inline mr-2">Lisätiedot</h6>
               <i className="fa fa-angle-down"></i>
             <Collapse in={open}>
-        <div style={{ wordWrap: 'break-word' }} id="example-collapse-text">
+        <div id="example-collapse-text">
           {description}
         </div>
       </Collapse>

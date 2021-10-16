@@ -10,18 +10,18 @@ const Avatar = (props: { initials: string }) => {
   const { initials } = props;
   return (
     <AvatarContainer>
-      <h5 className="text-white text-center">{initials}</h5>
+      <h6 className="text-center">{initials}</h6>
   </AvatarContainer>
   );
 }
 
 const AvatarContainer = styled.div`
-    width: 52px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
     padding-top: 13px;
     border-radius: 50%;
-    background: #4462ff; 
-    color: #fff;
+    background: #00fff1; 
+    color: #1f223d;
     position: relative;
     margin-bottom: 10px;
 

@@ -102,7 +102,6 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 };
 
 export const createChat = (chat) => async (dispatch, getState) => {
-  console.log("chat", chat);
   try {
     dispatch({
       type: CREATE_CHAT_REQUEST,

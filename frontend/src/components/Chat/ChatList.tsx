@@ -8,7 +8,11 @@ import Loader from '../Loader';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ChatList: FC<{}> = () => {
+interface ChatListProps {
+  userId: string
+}
+
+const ChatList: FC<ChatListProps> = ({ userId }) => {
   const allChats = useSelector((state) => state.userChats);
   const { allUserChats, loading: loadingChats } = allChats;
   const allUsers = useSelector((state) => state.participatedUsers);
@@ -23,15 +27,18 @@ const ChatList: FC<{}> = () => {
   }, [dispatch, allUserChats]);
 
   useEffect(() => {
-    console.log('chatas', allUserChats)
     if (allUserChats?.length > 0) {
-      dispatch(getParticipatedUsers(allUserChats.map((chat) => chat.participatedUser)));
+      const participatedIds = 
+      allUserChats?.map((chat) => chat.participatedUser).
+      concat(allUserChats.map((chat) => chat.createdBy))?.filter((id) => id !== userId);
+      
+      dispatch(getParticipatedUsers(participatedIds));
     }
 
   }, [allUserChats, dispatch]);
 
-  const getInitials = (userId): string => {
-  const name = participatedUsers.find((user) => user._id === userId)?.name;
+  const getInitials = (chat) => {
+  const name = participatedUsers?.find((user) => user._id === chat.participatedUser || user._id === chat.createdBy)?.name;
   let initials = name?.split(' ');
 
   if(initials?.length > 1) {
@@ -46,8 +53,8 @@ const handleClickChat = (id) => {
   history.push(`/chats/${id}`)
 };
 
-const getRightUserName = (userId) => {
-  const userName = participatedUsers.find((user) => user._id === userId)?.name;
+const getRightUserName = (chat) => {
+  const userName = participatedUsers?.find((user) => user._id === chat.participatedUser || user._id === chat.createdBy)?.name;
   return (
     <small className="p-2">{userName}</small>
   )
@@ -57,13 +64,13 @@ const getRightUserName = (userId) => {
 
    return (
      <div className="min-h-75">
-      <Row className="justify-content-center">
+      <Row className="justify-content-center text-light">
       <Col>
-        <h6 className="my-3 text-center">Keskustelut</h6>
+        <h6 className="my-3 text-center text-light">Keskustelut</h6>
       {allUserChats?.map((chat, index) => (
         <ChatItem onClick={() => handleClickChat(chat._id)} className="my-2 d-flex border-bottom border-dark" key={chat._id}>
-        <Avatar initials={getInitials(chat.participatedUser)} />
-        {getRightUserName(chat.participatedUser)}
+        <Avatar initials={getInitials(chat)} />
+        {getRightUserName(chat)}
         </ChatItem>
       ))}
       </Col>

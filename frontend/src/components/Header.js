@@ -18,10 +18,10 @@ const Header = () => {
   };
   return (
 <header>
-      <Navbar className="mb-3" style={{padding: '.7rem 1rem', background: '#222629'}} variant='dark' expand='lg' collapseOnSelect>
+      <Navbar className="mb-3" style={{padding: '.7rem 1rem', }} bg='light' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>Assistant-Finder</Navbar.Brand>
+            <Navbar.Brand>Avustajan Etsijä</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -29,13 +29,13 @@ const Header = () => {
             <Nav className='ml-auto'>
               {userInfo && (
               <LinkContainer to='/chats'>
-                <Nav.Link>
+                <Nav.Link className="text-dark">
                   <i className='fas fa-comments'></i> Keskustelut
                 </Nav.Link>
               </LinkContainer>
               )}
               {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username'>
+                <NavDropdown className="text-dark" title={userInfo.name} id='username'>
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>Profiili</NavDropdown.Item>
                   </LinkContainer>

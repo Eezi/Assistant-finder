@@ -306,19 +306,17 @@ export const getParticipatedUsers = (ids) => async (dispatch, getState) => {
     dispatch({
       type: PARTICIPATED_USERS_REQUEST,
     });
-
     const { userLogin: { userInfo } } = getState()
-
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`
+        Authorization: `Bearer ${userInfo.token}`,
+        ids,
       },
     };
     
     const { data } = await axios.get(
-      `/api/users`,
+      `/api/users/participated-users`,
       config,
-      { ids },
     );
 
     dispatch({
