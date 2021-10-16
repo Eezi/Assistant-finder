@@ -64,7 +64,7 @@ const ProfileScreen = ({ location, history }) => {
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
-        <UserForm loggedUser={!!userInfo} errors={errors} form={form} setForm={setForm} />
+        <UserForm errors={errors} form={form} setForm={setForm} />
         <p style={{ color: 'green' }}>{successMessage}</p>
         <Button onClick={submitHandler} varian="primary">
           Päivitä tiedot

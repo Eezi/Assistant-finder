@@ -54,7 +54,7 @@ const RegisterScreen = ({ location, history }) => {
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
-      <UserForm setForm={setForm} errors={errors} form={form}  />
+      <UserForm setForm={setForm} isRegisterView={true} errors={errors} form={form}  />
 
       <Button onClick={submitHandler} varian="primary">
         Rekiteröidy

@@ -17,10 +17,10 @@ interface UserFormProps {
     form: UserFormTypes,
     setForm: (form: UserFormTypes) => void,
     errors: UserFormTypes,
-    loggedUser?: boolean,
+    isRegisterView: boolean,
 }
 
-const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement => {
+const UserForm: FC<UserFormProps> = ({ form, setForm, errors, isRegisterView }): ReactElement => {
 
   const handleFields = (field, value) => {
     setForm({
@@ -151,6 +151,7 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
           ></Form.Control>
         </Form.Group>
 
+      {!isRegisterView && (
         <Row>
         <Form.Group as={Col}>
           <Form.Label>Kiireellinen aika alkaa</Form.Label>
@@ -174,6 +175,7 @@ const UserForm: FC<UserFormProps> = ({ form, setForm, errors }): ReactElement =>
           onChange={(date) => handleFields('busyEndDate', date)} />
         </Form.Group>
         </Row>
+      )}
 
         <Form.Group controlId="password">
           <Form.Label>Salasana</Form.Label>
