@@ -6,28 +6,24 @@ import { getParticipatedUsers } from '../../actions/userActions';
 import { useSelector, useDispatch } from "react-redux";
 import Loader from '../Loader';
 import { useHistory } from 'react-router-dom';
+import { ChatTypes } from '../../types';
 import styled from 'styled-components';
 
 interface ChatListProps {
   userId: string
+  allUserChats: ChatTypes[]
+  loading: boolean
 }
 
-const ChatList: FC<ChatListProps> = ({ userId }) => {
-  const allChats = useSelector((state) => state.userChats);
-  const { allUserChats, loading: loadingChats } = allChats;
+const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading }) => {
   const allUsers = useSelector((state) => state.participatedUsers);
   const { participatedUsers, loading: loadingUsers } = allUsers;
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    if (!allUserChats) {
-      dispatch(getUserChats());
-    }
-  }, [dispatch, allUserChats]);
 
   useEffect(() => {
-    if (allUserChats?.length > 0) {
+    if (allUserChats?.length > 0 && allUserChats && !loading) {
       const participatedIds = 
       allUserChats?.map((chat) => chat.participatedUser).
       concat(allUserChats.map((chat) => chat.createdBy))?.filter((id) => id !== userId);
@@ -35,7 +31,7 @@ const ChatList: FC<ChatListProps> = ({ userId }) => {
       dispatch(getParticipatedUsers(participatedIds));
     }
 
-  }, [allUserChats, dispatch]);
+  }, [allUserChats, loading, dispatch]);
 
   const getInitials = (chat) => {
   const name = participatedUsers?.find((user) => user._id === chat.participatedUser || user._id === chat.createdBy)?.name;
@@ -60,7 +56,8 @@ const getRightUserName = (chat) => {
   )
 }
 
- if (loadingChats || loadingUsers) return <Loader />;
+ if (loading || loadingUsers) return <Loader />;
+
 
    return (
      <div className="min-h-75">

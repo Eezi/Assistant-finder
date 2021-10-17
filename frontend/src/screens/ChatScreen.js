@@ -5,7 +5,10 @@ import ChatProfile from '../components/Chat/ChatProfile';
 import {
   Row,
   Col,
+  Button,
 } from "react-bootstrap";
+import EmptyState from '../components/EmptyState';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { getChatById, getUserChats } from '../actions/chatActions';
 import { getUserDetails } from '../actions/userActions';
@@ -16,6 +19,7 @@ import Loader from "../components/Loader";
 const ChatScreen = ({ match }) => {
   const chatId = match.params.id;
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const chatData = useSelector((state) => state.getChat);
   const { chat, loading } = chatData;
@@ -25,6 +29,15 @@ const ChatScreen = ({ match }) => {
 
   const participated = useSelector((state) => state.userDetails);
   const { user: participatedUser, loading: loadingParticipated } = participated;
+
+  const allChats = useSelector((state) => state.userChats);
+  const { allUserChats, loading: loadingChats } = allChats;
+
+  useEffect(() => {
+    if (!allUserChats) {
+      dispatch(getUserChats());
+    }
+  }, [dispatch, allUserChats]);
 
   useEffect(() => {
     if (chatId) {
@@ -39,13 +52,20 @@ const ChatScreen = ({ match }) => {
     }
   }, [loading, chat])
 
-  if (loading || loadingUser || loadingParticipated) return <Loader />
+  if (loading || loadingUser || loadingParticipated || loadingChats) return <Loader />
+
+ if (allUserChats?.length <= 0) {
+  return <EmptyState 
+  title="Ei vielä yhtään avattua keskustelua" 
+  subTitle="Palaa etusivulle" 
+  submitButton={<Button onClick={() => history.push('/')}>Tästä</Button>} />
+ }
 
   return (
     <Div className="h-100">
     <Row >
       <Col style={{ borderTopLeftRadius: '5px', borderBottomLeftRadius: '5px', background: '#1f223d' }}>
-        <ChatList userId={userInfo?._id} />
+        <ChatList allUserChats={allUserChats} loading={loadingChats} userId={userInfo?._id} />
       </Col>
       <MainCol style={{ background: '#fff' }} className="h-100 d-inline-block" md={7}>
        <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 

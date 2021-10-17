@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createChat } from "../actions/chatActions";
 
-const UserCard = ({ cardInfo, userId }) => {
+const UserCard = ({ cardInfo, userId, index, users }) => {
   const [open, setOpen] = useState(false)
   const [collapseId, setCollapseId] = useState(null)
   const { description, name, phone, email, gender, region, _id, experience } = cardInfo;
@@ -41,7 +41,7 @@ const UserCard = ({ cardInfo, userId }) => {
     dispatch(createChat(chat));
     setAllowPush(true);
   };
-  console.log('collid', collapseId, 'user', userId)
+  console.log('collid', open)
   return (
     <StyledCard style={{ width: "20rem" }} className="text-dark">
       <Card.Body>
@@ -56,7 +56,7 @@ const UserCard = ({ cardInfo, userId }) => {
           <h6 className="d-inline mr-2">Näytä Lisätiedot</h6>
           <i className="fa fa-angle-down"></i>
         </Div>
-       <Collapse in={(open && collapseId === userId)}>
+       <Collapse in={open}>
         <div style={{ wordWrap: 'break-word' }} id="example-collapse-text">
         <Form.Group>
           <Form.Label className="text-muted">Puhelinnumero</Form.Label>

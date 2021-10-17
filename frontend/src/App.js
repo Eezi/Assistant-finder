@@ -11,6 +11,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
+import Onboard from "./screens/Onboard";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Switch>
             <Route path="/product/:id" component={ProductScreen} />
             <Route path="/login" component={LoginScreen} />
+            <Route path="/onboard" component={Onboard} />
             <Route path="/admin/userlist" component={UserListScreen} />
             <Route path="/admin/user/:id/edit" component={UserEditScreen} />
             <Route path="/register" component={RegisterScreen} />

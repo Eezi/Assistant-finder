@@ -19,7 +19,7 @@ const HomeScreen = ({ match, history }) => {
     if(userInfo) {
       dispatch(getUserList());
     } else {
-      history.push('/login')
+      history.push('/onboard')
     }
   }, [dispatch, userInfo]);
 
@@ -33,8 +33,8 @@ const HomeScreen = ({ match, history }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Div>
-          {users.map((item) => (
-            <UserCard key={item._id} cardInfo={item} userId={userInfo?._id} />
+          {users.map((user, index) => (
+            <UserCard key={user._id} users={users} cardInfo={user} userId={user?._id} />
           ))}
         </Div>
       )}

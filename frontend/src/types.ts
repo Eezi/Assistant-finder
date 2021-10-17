@@ -12,3 +12,18 @@ export interface UserFormTypes {
     password: string,
     confirmPassword: string,
 }
+
+export interface Message {
+    message: string
+    receiverHasRead: boolean
+    createdBy: string
+    createdAt: string
+}
+
+export interface ChatTypes {
+    createdBy: string
+    participatedUser: string
+    createdAt: string
+    messages: Message[]
+    _id: string
+}
