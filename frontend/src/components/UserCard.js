@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Card, Collapse, Form, Button } from "react-bootstrap";
-import Raiting from "./Raiting";
+import { Card, Form, Accordion } from "react-bootstrap";
 import { useHistory } from "react-router-dom"
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createChat } from "../actions/chatActions";
 
 const UserCard = ({ cardInfo, userId, index, users }) => {
-  const [open, setOpen] = useState(false)
-  const [collapseId, setCollapseId] = useState(null)
   const { description, name, phone, email, gender, region, _id, experience } = cardInfo;
   const dispatch = useDispatch();
   const [allowPush, setAllowPush] = useState(false);
@@ -22,7 +18,7 @@ const UserCard = ({ cardInfo, userId, index, users }) => {
       history.push(`/chats/${chat?._id}`);
       setAllowPush(false);
     }
-  }, [chat, loading]);
+  }, [chat, loading, history, allowPush]);
 
   const checkGender = () => {
     if (gender === "male") return "Mies";
@@ -41,23 +37,21 @@ const UserCard = ({ cardInfo, userId, index, users }) => {
     dispatch(createChat(chat));
     setAllowPush(true);
   };
-  console.log('collid', open)
+
   return (
     <StyledCard style={{ width: "20rem" }} className="text-dark">
       <Card.Body>
         <Card.Title className="text-center mb-4">{name}</Card.Title>
         <Hr />
-        <div className="role-button" onClick={() => {
-          setOpen(!open)
-          setCollapseId(userId);
 
-          }}>
+       <Accordion.Toggle className="border-0 bg-transparent" fluid eventKey={_id}>
           <Div>
           <h6 className="d-inline mr-2">Näytä Lisätiedot</h6>
           <i className="fa fa-angle-down"></i>
         </Div>
-       <Collapse in={open}>
-        <div style={{ wordWrap: 'break-word' }} id="example-collapse-text">
+      </Accordion.Toggle>
+      <Accordion.Collapse className="pt-3" eventKey={_id}>
+        <div style={{ wordWrap: 'break-word' }}>
         <Form.Group>
           <Form.Label className="text-muted">Puhelinnumero</Form.Label>
           <p>{phone}</p>
@@ -89,8 +83,8 @@ const UserCard = ({ cardInfo, userId, index, users }) => {
         </Form.Group>
 
         </div>
-      </Collapse>
-      </div>
+
+      </Accordion.Collapse>
       </Card.Body>
       <Card.Footer className="text-center bg-transparent">
         <ChatButton onClick={handleCreateChat}>Avaa keskustelu</ChatButton>

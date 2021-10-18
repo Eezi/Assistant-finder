@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import UserCard from "../components/UserCard";
+import { Accordion } from 'react-bootstrap';
 import { getUserList } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
-import { Link } from "react-router-dom";
 
 const HomeScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const HomeScreen = ({ match, history }) => {
     } else {
       history.push('/onboard')
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, history]);
 
   return (
     <>
@@ -34,7 +34,9 @@ const HomeScreen = ({ match, history }) => {
       ) : (
         <Div>
           {users.map((user, index) => (
-            <UserCard key={user._id} users={users} cardInfo={user} userId={user?._id} />
+          <Accordion key={user._id}>
+            <UserCard  users={users} cardInfo={user} userId={user?._id} />
+          </Accordion>
           ))}
         </Div>
       )}
