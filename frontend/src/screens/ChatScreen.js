@@ -37,6 +37,9 @@ const ChatScreen = ({ match }) => {
     if (!allUserChats) {
       dispatch(getUserChats());
     }
+    if (!chatId && allUserChats?.length > 0) {
+      history.push(`/chats/${allUserChats[0]?._id}`)
+    }
   }, [dispatch, allUserChats]);
 
   useEffect(() => {
@@ -65,7 +68,7 @@ const ChatScreen = ({ match }) => {
     <Div className="h-100">
     <Row >
       <Col style={{ borderTopLeftRadius: '5px', borderBottomLeftRadius: '5px', background: '#1f223d' }}>
-        <ChatList allUserChats={allUserChats} loading={loadingChats} userId={userInfo?._id} />
+        <ChatList allUserChats={allUserChats} chatId={chatId} loading={loadingChats} userId={userInfo?._id} />
       </Col>
       <MainCol style={{ background: '#fff' }} className="h-100 d-inline-block" md={7}>
        <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 

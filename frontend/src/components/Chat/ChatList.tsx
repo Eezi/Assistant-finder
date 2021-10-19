@@ -11,11 +11,12 @@ import styled from 'styled-components';
 
 interface ChatListProps {
   userId: string
+  chatId: string
   allUserChats: ChatTypes[]
   loading: boolean
 }
 
-const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading }) => {
+const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) => {
   const allUsers = useSelector((state) => state.participatedUsers);
   const { participatedUsers, loading: loadingUsers } = allUsers;
   const dispatch = useDispatch();
@@ -49,15 +50,17 @@ const handleClickChat = (id) => {
   history.push(`/chats/${id}`)
 };
 
-const getRightUserName = (chat) => {
+  const getRightUserName = (chat) => {
   const userName = participatedUsers?.find((user) => user._id === chat.participatedUser || user._id === chat.createdBy)?.name;
   return (
     <small className="p-2">{userName}</small>
   )
-}
+  };
+
+  const activeChat = allUserChats?.find((chat) => chat._id === chatId);
+  const currentChatUserId = participatedUsers.find((user) => user._id === activeChat?.participatedUser || user._id === activeChat?.createdBy)?._id;
 
  if (loading || loadingUsers) return <Loader />;
-
 
    return (
      <div className="min-h-75">
@@ -65,7 +68,11 @@ const getRightUserName = (chat) => {
       <Col>
         <h6 className="my-3 text-center text-light">Keskustelut</h6>
       {allUserChats?.map((chat, index) => (
-        <ChatItem onClick={() => handleClickChat(chat._id)} className="my-2 d-flex border-bottom border-dark" key={chat._id}>
+        <ChatItem 
+          isActive={currentChatUserId === chat.participatedUser || currentChatUserId === chat.createdBy} 
+          onClick={() => handleClickChat(chat._id)} 
+          className="my-2 d-flex border-bottom border-dark" 
+          key={chat._id}>
         <Avatar initials={getInitials(chat)} />
         {getRightUserName(chat)}
         </ChatItem>
@@ -77,8 +84,16 @@ const getRightUserName = (chat) => {
 
 }
 
-const ChatItem = styled.div`
+type PropType = {
+  isActive?: boolean
+}
+
+
+const ChatItem = styled.div<PropType>`
     width: 160px;
+    padding: 5px 5px 0 5px;
+    border-radius: 5px;
+    border: ${props => props.isActive ? "1px solid #00fff1 !important" : "none"};
     &:hover {
       cursor: pointer;
     }

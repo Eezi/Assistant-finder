@@ -44,12 +44,12 @@ const UserCard = ({ cardInfo, userId, index, users }) => {
         <Card.Title className="text-center mb-4">{name}</Card.Title>
         <Hr />
 
-       <Accordion.Toggle className="border-0 bg-transparent" fluid eventKey={_id}>
+       <Toggle className="border-0 bg-transparent" fluid eventKey={_id}>
           <Div>
           <h6 className="d-inline mr-2">Näytä Lisätiedot</h6>
           <i className="fa fa-angle-down"></i>
         </Div>
-      </Accordion.Toggle>
+      </Toggle>
       <Accordion.Collapse className="pt-3" eventKey={_id}>
         <div style={{ wordWrap: 'break-word' }}>
         <Form.Group>
@@ -67,20 +67,26 @@ const UserCard = ({ cardInfo, userId, index, users }) => {
           <p>{region}</p>
         </Form.Group>
         <Hr />
+        {gender && (
         <Form.Group>
           <Form.Label className="text-muted">Sukupuoli</Form.Label>
           <p>{checkGender()}</p>
         </Form.Group>
+        )}
         <Hr />
+        {description && (
         <Form.Group>
           <Form.Label className="text-muted">Kuvaus</Form.Label>
           <p>{description}</p>
         </Form.Group>
+        )}
         <Hr />
+        {experience && (
         <Form.Group>
           <Form.Label className="text-muted">Kokemus</Form.Label>
           <p>{experience}</p>
         </Form.Group>
+        )}
 
         </div>
 
@@ -104,6 +110,12 @@ const StyledCard = styled(Card)`
 const Div = styled.div`
   &:hover {
     cursor: pointer;
+  }
+`;
+
+const Toggle = styled(Accordion.Toggle)`
+  &:focus {
+    outline: none !important;
   }
 `;
 
