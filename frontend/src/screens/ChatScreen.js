@@ -73,7 +73,7 @@ const ChatScreen = ({ match }) => {
       <MainCol style={{ background: '#fff' }} className="h-100 d-inline-block" md={7}>
        <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
       </MainCol>
-      <Col style={{ borderRadius: '5px', background: '#fff' }} md={3}>
+      <Col style={{ borderTopRightRadius: '5px', borderBottomRightRadius: '5px', background: '#1f223d' }} md={3}>
         <ChatProfile loading={loading} {...participatedUser} />
       </Col>
     </Row>
@@ -82,8 +82,9 @@ const ChatScreen = ({ match }) => {
 };
 
 const MainCol = styled(Col)`
-border-right: 2px solid #a1a1a1;
 `;
+
+//border-right: 2px solid #a1a1a1;
 //box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 
 //box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;

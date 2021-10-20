@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
 const NewMessage = ({ socket, userId, chatId }) => {
@@ -14,7 +15,7 @@ const NewMessage = ({ socket, userId, chatId }) => {
     <form onSubmit={submitForm}>
      <Form.Group as={Row} className="mt-4">
     <Col md="10">
-      <Form.Control
+      <FormControl
         autoFocus
         className="d-inline"
         value={value}
@@ -25,13 +26,27 @@ const NewMessage = ({ socket, userId, chatId }) => {
       />
       </Col>
       <Col md="2">
-      <Button type="submit">Lähetä
+      <SubmitButton type="submit">Lähetä
       <i className="fa-solid fa-paper-plane-top"></i>
-      </Button>
+      </SubmitButton>
     </Col>
       </Form.Group>
 </form>
   );
 };
+
+const SubmitButton = styled(Button)`
+  background: #00fff1 !important;
+  color: #1f223d;
+  border-radius: 5px;
+  height: 2.8rem;
+`;
+
+const FormControl = styled(Form.Control)`
+  background: #fff !important;
+  height: 2.8rem;
+  border: 2px solid #1f223d;
+  border-radius: 5px;
+`;
 
 export default NewMessage;
