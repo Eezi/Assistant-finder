@@ -2,8 +2,10 @@ import React from 'react'
 import { Route, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import styled from 'styled-components'
+import { Navbar, Badge, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { logout } from "../actions/userActions";
+import UseAllUserChats from '../utils/hooks/useAllUserChats';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -11,6 +13,11 @@ const Header = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const { 
+    loading,
+    allUnreadMessages,
+    unreadMessagesPerChat,
+   } = UseAllUserChats();
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -31,6 +38,7 @@ const Header = () => {
               <LinkContainer to='/chats'>
                 <Nav.Link className="text-dark">
                   <i className='fas fa-comments'></i> Keskustelut
+                  {allUnreadMessages > 0 && <StyledBadge pill bg="danger">{allUnreadMessages}</StyledBadge>}
                 </Nav.Link>
               </LinkContainer>
               )}
@@ -70,5 +78,15 @@ const Header = () => {
     </header>
   );
 };
+
+const StyledBadge = styled(Badge)`
+  background: red !important;
+  font-size: .8rem;
+  color: #fff;
+  position: absolute;
+  top: 5px;
+  border-radius: 50%;
+`;
+
 
 export default Header;

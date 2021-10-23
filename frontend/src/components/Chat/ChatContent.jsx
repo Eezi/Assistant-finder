@@ -4,12 +4,10 @@ import styled from 'styled-components'
 import MessageInput from './MessageInput'
 import Messages from './Messages'
 import Loader from "../Loader";
-import { useSelector } from "react-redux";
 import io from 'socket.io-client';
 
 const ChatContent = ({ chatMessages, user, participatedUser, loading, chatId }) => {
   const [socket, setSocket] = useState(null);
-  console.log('user', participatedUser)
   
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:8080`);
