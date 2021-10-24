@@ -4,7 +4,6 @@ import { getUserChats } from '../../actions/chatActions';
 
 const UseAllUserChats = () => {
   const [allUnreadMessages, setAllUnreadMessages] = useState(0);
-  const [unreadMessagesPerChat, setUnreadMessagesPerChat] = useState();
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, loading: loadingUser } = userLogin;
@@ -12,26 +11,37 @@ const UseAllUserChats = () => {
   const allChats = useSelector((state) => state.userChats);
   const { allUserChats, loading: loadingChats } = allChats;
 
+  const resetMessageCounter = () => {
+      setAllUnreadMessages(0);
+  };
+
   useEffect(() => {
-    if (!allUserChats) {
+    if (!allUserChats && userInfo) {
       dispatch(getUserChats());
     }
-  }, [dispatch, allUserChats]);
+  }, [dispatch, allUserChats, userInfo]);
 
   useEffect(() => {
     if (allUserChats && !loadingChats) {
-      const unreadedMessages = allUserChats?.map((chat) => chat?.messages?.filter((message) => message.receiverHasRead === false && message.createdBy !== userInfo._id));
-      if (unreadedMessages?.length > 0) {
-        const counter = unreadedMessages?.map((messages) => setAllUnreadMessages(prevCount => prevCount + messages.length));
-      }
+      const unreadedMessages = allUserChats?.map((chat) => {
+        if (chat?.messages?.length > 0) {
+          chat.messages.forEach((message) => {
+            if (message.receiverHasRead === false && message.createdBy !== userInfo._id) {
+              setAllUnreadMessages(allUnreadMessages => allUnreadMessages + 1);
+            }
+
+          });
+        }         
+        return chat;
+      })
     }
 
-  }, [allUserChats, loadingChats])
+  }, [allUserChats, loadingChats, loadingUser]);
 
 return {    
     loadingChats,
     allUnreadMessages,
-    unreadMessagesPerChat,
+    resetMessageCounter,
 }
 }
  

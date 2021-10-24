@@ -17,11 +17,13 @@ const Header = () => {
     loading,
     allUnreadMessages,
     unreadMessagesPerChat,
+    resetMessageCounter,
    } = UseAllUserChats();
 
   const logoutHandler = () => {
     dispatch(logout());
     history.push('/login');
+    resetMessageCounter();
   };
   return (
 <header>

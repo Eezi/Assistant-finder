@@ -38,7 +38,7 @@ const ProfileScreen = ({ location, history }) => {
         }
       }
     }
-  }, [dispatch, history, userInfo, user, success]);
+  }, [dispatch, history, userInfo, user, success, form]);
 
   const submitHandler = (e) => {
     e.preventDefault();

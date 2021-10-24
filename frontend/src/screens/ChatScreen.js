@@ -40,7 +40,7 @@ const ChatScreen = ({ match }) => {
     if (!chatId && allUserChats?.length > 0) {
       history.push(`/chats/${allUserChats[0]?._id}`)
     }
-  }, [dispatch, allUserChats]);
+  }, [dispatch, allUserChats, history, chatId]);
 
   useEffect(() => {
     if (chatId) {
@@ -53,7 +53,7 @@ const ChatScreen = ({ match }) => {
       const rightId = chat.participatedUser === userInfo._id ? chat.createdBy : chat.participatedUser;
       dispatch(getUserDetails(rightId));
     }
-  }, [loading, chat])
+  }, [loading, chat, dispatch, userInfo])
 
   if (loading || loadingUser || loadingParticipated || loadingChats) return <Loader />
 
@@ -73,7 +73,7 @@ const ChatScreen = ({ match }) => {
       <MainCol style={{ background: '#fff' }} className="h-100 d-inline-block" md={7}>
        <ChatContent user={userInfo} chatId={chatId} loading={loading} participatedUser={participatedUser} chatMessages={chat?.messages} /> 
       </MainCol>
-      <Col style={{ borderTopRightRadius: '5px', borderBottomRightRadius: '5px', background: '#1f223d' }} md={3}>
+      <Col style={{ borderTopRightRadius: '5px', borderBottomRightRadius: '5px', background: '#1f223d' }}>
         <ChatProfile loading={loading} {...participatedUser} />
       </Col>
     </Row>
