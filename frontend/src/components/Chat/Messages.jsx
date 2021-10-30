@@ -1,11 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import { getUserChats } from '../../actions/chatActions';
+import { useSelector, useDispatch } from "react-redux"; 
+import UseAllUserChats from '../../utils/hooks/useAllUserChats';
 
 const Messages = ({ socket, chatMessages, participatedUser, user }) => {
   const [messages, setMessages] = useState([]);
   const messageRef = useRef();
+  const dispatch = useDispatch();
   moment.locale('fi')
+
+  const { 
+    addToUnredCounter,
+   } = UseAllUserChats();
   
   useEffect(() => {
     setMessages(chatMessages);
@@ -15,6 +23,10 @@ const Messages = ({ socket, chatMessages, participatedUser, user }) => {
     const messageListener = (message) => {
         if (message?.length > 0) {
             setMessages(message)
+            console.log('CHATTI MUUTTUU JAT TULEE VIESTI')
+            // Tässä kohtaa voisi päivittää chattien tilaa
+          //dispatch(getUserChats())
+            addToUnredCounter(1);
         }
     };
   

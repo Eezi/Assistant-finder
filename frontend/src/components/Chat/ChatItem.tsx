@@ -10,9 +10,10 @@ interface ChatItemProps {
     chat: ChatTypes
     userId: string
     name: string
+    urlChatId: string
 }
 
-const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name }): ReactElement => {
+const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }): ReactElement => {
     const [unreadMessages, setUnreadMessages] = useState(0);
     const history = useHistory();
 
@@ -25,6 +26,13 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name }): ReactEle
             });
         }
     }, [chat]);
+    
+    useEffect(() => {
+      if (chat?.messages?.length > 0 && unreadMessages > 0) {
+        const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId)?.length || 0;
+        setUnreadMessages(messages => messages - counter);
+      }
+    }, [urlChatId]);
 
     const handleClickChat = (id) => {
      history.push(`/chats/${id}`)
@@ -71,8 +79,7 @@ const Container = styled.div<PropType>`
 
 const StyledBadge = styled(Badge)`
   background: red !important;
-  height: 20px;
-  width: 20px;
+  height: 22px;
   font-size: .7rem;
   color: #fff;
   border-radius: 50%;

@@ -47,6 +47,7 @@ const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) 
         return (
         <ChatItem 
           isActive={currentChatUserId === chat.participatedUser || currentChatUserId === chat.createdBy} 
+          urlChatId={chatId}
           userId={userId}
           chat={chat}
           key={chat._id}

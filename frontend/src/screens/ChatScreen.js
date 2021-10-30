@@ -55,13 +55,13 @@ const ChatScreen = ({ match }) => {
     }
   }, [loading, chat, dispatch, userInfo])
 
-  if (loading || loadingUser || loadingParticipated || loadingChats) return <Loader />
+  if (loading || loadingUser || loadingParticipated)return <Loader />
 
  if (allUserChats?.length <= 0) {
   return <EmptyState 
-  title="Ei vielä yhtään avattua keskustelua" 
-  subTitle="Palaa etusivulle" 
-  submitButton={<Button onClick={() => history.push('/')}>Tästä</Button>} />
+    title="Ei vielä yhtään avattua keskustelua" 
+    subTitle="Palaa etusivulle" 
+    submitButton={<Button onClick={() => history.push('/')}>Tästä</Button>} />
  }
 
   return (

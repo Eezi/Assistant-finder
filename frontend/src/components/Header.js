@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import styled from 'styled-components'
@@ -10,13 +10,11 @@ import UseAllUserChats from '../utils/hooks/useAllUserChats';
 const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const { 
     loading,
     allUnreadMessages,
-    unreadMessagesPerChat,
     resetMessageCounter,
    } = UseAllUserChats();
 
@@ -25,8 +23,9 @@ const Header = () => {
     history.push('/login');
     resetMessageCounter();
   };
+
   return (
-<header>
+    <header>
       <Navbar className="mb-3" style={{padding: '.7rem 1rem', }} bg='light' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
