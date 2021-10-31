@@ -22,16 +22,20 @@ const UseAllUserChats = () => {
     setAllUnreadMessages(0);
   };
 
-  const addToUnredCounter = (numberToAdd) => {
-    console.log('Lisätään luku', numberToAdd)
-    setAllUnreadMessages(allUnreadMessages => allUnreadMessages + numberToAdd);
+  const addToUnredCounter = (numberToAdd, action) => {
+    if (action === 'increment') {
+      return setAllUnreadMessages(allUnreadMessages => allUnreadMessages + numberToAdd);
+    }
+    if (action === 'decrement') {
+      return setAllUnreadMessages(allUnreadMessages => allUnreadMessages - numberToAdd);
+    }
   };
-    console.log('Kaikki vietit päivittyy ', allUnreadMessages)
 
   useEffect(() => {
     if (allUserChats && rightPathname === 'chats' && allUnreadMessages > 0) {
       const currentChat = allUserChats.find((chat) => chat._id === chatId);
-      const unreadMessagesCount = currentChat?.messages?.filter((message) => message.receiverHasRead === false && message.createdBy !== userInfo._id)?.length || 0;
+      const unreadMessagesCount = currentChat?.messages?.filter((message) => 
+        message.receiverHasRead === false && message.createdBy !== userInfo._id)?.length || 0;
       setAllUnreadMessages(messages => messages - unreadMessagesCount);
     }
   }, [chatId, allUserChats]);
@@ -42,10 +46,9 @@ const UseAllUserChats = () => {
     }
   }, [dispatch, allUserChats, userInfo]);
 
-  // Haetaan kaikki lukemattomat viestit kun kaikki chatit tulee 
+  // Lasketaan kaikki lukemattomat viestit kun kaikki chatit tulee 
   useEffect(() => {
     if (allUserChats && !loadingChats) {
-      console.log('RENDAA KAIKKI LUVUT')
       const unreadedMessages = allUserChats?.map((chat) => {
         if (chat?.messages?.length > 0) {
           chat.messages.forEach((message) => {

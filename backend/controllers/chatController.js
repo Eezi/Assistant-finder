@@ -112,7 +112,33 @@ const addNewMessage = asyncHandler(async(message) => {
     return chat.messages || [];
     //res.status(201).json({ message: 'Review added' })
   }
-})
+});
+
+const readChatMessages = asyncHandler(async(args) => {
+  console.log('ARSGSS', args)
+  // Muutetaan ne viestit luettu jossa createdBy !== useId
+  const { userId, chatId } = args;
+
+  const chat = await Chat.findById(chatId);
+  const newMessages = chat.messages.map((message) => {
+    if (message.createdBy !== userId) {
+      message.receiverHasRead = true;
+    }
+    return message;
+  });
+  console.log('messages', newMessages)
+  Chat.update({ _id: chatId }, { $set: { messages: newMessages }});
+
+  /*Chat.update({
+    _id: chatId,
+    //'messages.createdBy': { $ne: userId }
+    messages: { $elemMatch: { createdBy: { $ne: userId }  }}
+  }, { 
+    $set: {'messages.$.receiverHasRead': true }
+  })  */
+
+});
+
 // Create new review
 // POST /api/products/:id/revuews
 // Access private
@@ -172,5 +198,6 @@ export {
   addNewMessage,
   updateProduct,
   createProductReview,
-  getTopProducts
+  getTopProducts,
+  readChatMessages,
 };

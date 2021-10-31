@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { ChatTypes } from '../../types'
 import { Badge } from 'react-bootstrap'
 import Avatar from './Avatar'
+import UseAllUserChats from '../../utils/hooks/useAllUserChats';
+import io, { Socket } from 'socket.io-client';
+//import { useSocket } from '../../utils/hooks/useSocket';
 
 interface ChatItemProps {
     isActive: boolean
@@ -16,6 +19,18 @@ interface ChatItemProps {
 const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }): ReactElement => {
     const [unreadMessages, setUnreadMessages] = useState(0);
     const history = useHistory();
+    //const { socket } = useSocket();
+    const { 
+      addToUnredCounter 
+    } = UseAllUserChats();
+  const [socket, setSocket] = useState(null);
+  
+  useEffect((): (() => void) => {
+    // Tämä ei välttämättä toimi kun vie tuontantoon
+    const newSocket = io(`http://${window.location.hostname}:8080`);
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
 
     useEffect(() => {
         if (chat?.messages?.length > 0) {
@@ -28,14 +43,17 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
     }, [chat]);
     
     useEffect(() => {
-      if (chat?.messages?.length > 0 && unreadMessages > 0) {
+      if (chat?.messages?.length > 0 && unreadMessages >= 0 && chat?._id === urlChatId) {
         const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId)?.length || 0;
         setUnreadMessages(messages => messages - counter);
+        addToUnredCounter(counter, 'decrement');
       }
-    }, [urlChatId]);
+    }, [urlChatId, chat]);
 
     const handleClickChat = (id) => {
-     history.push(`/chats/${id}`)
+      history.push(`/chats/${id}`)
+      // Tässä voisi välittää tiedon että luetaan viestit
+      socket.emit('readMessages', { userId, chatId: chat._id});
     };
 
     const getInitials = (name) => {
@@ -50,16 +68,15 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
      return initials?.toUpperCase();
     };
 
-
     return (
         <Container 
           className="my-2 d-flex border-bottom border-dark" 
           isActive={isActive}
-          onClick={() => handleClickChat(chat._id)} 
+          onClick={() => handleClickChat(chat._id)}
         >
-        <Avatar initials={getInitials(name)} />
-        <small className="p-2">{name}</small>
-        {unreadMessages > 0 && <StyledBadge pill bg="danger">{unreadMessages}</StyledBadge>}
+          <Avatar initials={getInitials(name)} />
+          <small className="p-2">{name}</small>
+          {unreadMessages > 0 && <StyledBadge pill bg="danger">{unreadMessages}</StyledBadge>}
         </Container>
     )
 }
@@ -79,7 +96,7 @@ const Container = styled.div<PropType>`
 
 const StyledBadge = styled(Badge)`
   background: red !important;
-  height: 22px;
+  height: 20px;
   font-size: .7rem;
   color: #fff;
   border-radius: 50%;

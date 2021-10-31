@@ -1,4 +1,4 @@
-import { addNewMessage } from '../controllers/chatController.js';
+import { addNewMessage, readChatMessages } from '../controllers/chatController.js';
 
 const messages = [];
 const users = new Map();
@@ -12,6 +12,7 @@ class Connection {
 
     socket.on('getMessages', () => this.getMessages());
     socket.on('message', (value) => this.handleMessage(value));
+    socket.on('readMessages', (args) => this.readMessages(args));
     socket.on('disconnect', () => this.disconnect());
     socket.on('connect_error', (err) => {
       console.log(`connect_error due to ${err.message}`);
@@ -26,6 +27,11 @@ class Connection {
     messages.forEach((message) => this.sendMessage(message));
   }
 
+  readMessages = async(args) => {
+    console.log('TULEEKO TÄHÄ', args)
+    readChatMessages(args)
+  }
+
   handleMessage = async(value) => {
     const message = {
       createdBy: value.userId,
@@ -35,14 +41,6 @@ class Connection {
     };
     const data = await addNewMessage(message)
     this.sendMessage(data);
-
-    /*setTimeout(
-      () => {
-        messages = [];
-        this.io.sockets.emit('deleteMessage', message.id);
-      },
-      messageExpirationTimeMS,
-    );*/
   }
 
   disconnect() {

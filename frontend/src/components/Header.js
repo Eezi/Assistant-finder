@@ -39,7 +39,7 @@ const Header = () => {
               <LinkContainer to='/chats'>
                 <Nav.Link className="text-dark">
                   <i className='fas fa-comments'></i> Keskustelut
-                  {allUnreadMessages > 0 && <StyledBadge pill bg="danger">{allUnreadMessages}</StyledBadge>}
+                  {allUnreadMessages > 0 && <StyledIcon className="fas fa-bell"></StyledIcon>}
                 </Nav.Link>
               </LinkContainer>
               )}
@@ -80,13 +80,11 @@ const Header = () => {
   );
 };
 
-const StyledBadge = styled(Badge)`
-  background: red !important;
-  font-size: .8rem;
-  color: #fff;
+export const StyledIcon = styled.i`
+  font-size: 1rem;
+  color: red !important;
   position: absolute;
-  top: 5px;
-  border-radius: 50%;
+  top: 10px;
 `;
 
 

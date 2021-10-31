@@ -5,6 +5,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false,
     "strict": true,
     "skipLibCheck": true,
     "lib": [

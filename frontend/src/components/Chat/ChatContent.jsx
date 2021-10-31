@@ -4,12 +4,14 @@ import styled from 'styled-components'
 import MessageInput from './MessageInput'
 import Messages from './Messages'
 import Loader from "../Loader";
+//import { useSocket } from '../../utils/hooks/useSocket';
 import io from 'socket.io-client';
 
 const ChatContent = ({ chatMessages, user, participatedUser, loading, chatId }) => {
   const [socket, setSocket] = useState(null);
   
   useEffect(() => {
+    // Tämä ei välttämättä toimi kun vie tuontantoon
     const newSocket = io(`http://${window.location.hostname}:8080`);
     setSocket(newSocket);
     return () => newSocket.close();
