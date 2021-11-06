@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"; 
 import { getUserChats } from '../../actions/chatActions';
 
-const UseAllUserChats = () => { 
+const UseAllUserChats = (socket) => { 
   const [allUnreadMessages, setAllUnreadMessages] = useState(0); 
 
   const location = useLocation();
@@ -26,10 +26,25 @@ const UseAllUserChats = () => {
     if (action === 'increment') {
       return setAllUnreadMessages(allUnreadMessages => allUnreadMessages + numberToAdd);
     }
-    if (action === 'decrement') {
+    if (action === 'decrement' && allUnreadMessages > 0) {
       return setAllUnreadMessages(allUnreadMessages => allUnreadMessages - numberToAdd);
     }
   };
+
+  useEffect(() => {
+    const messageListener = (messages) => {
+      console.log('MESSAGES', messages)
+    };
+  
+  
+    socket.on('readMessages', messageListener);
+    socket.emit('getReadMessages');
+
+    return () => {
+      socket.off('readMessages', messageListener);
+
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (allUserChats && rightPathname === 'chats' && allUnreadMessages > 0) {
@@ -62,7 +77,8 @@ const UseAllUserChats = () => {
       })
     }
 
-  }, [allUserChats, loadingChats, loadingUser, userInfo._id]);
+  }, [allUserChats, loadingChats, loadingUser, userInfo?._id]);
+  console.log('unreadedMessages', allUnreadMessages)
 
 return {    
     loadingChats,
@@ -72,5 +88,4 @@ return {
 }
 }
  
-
 export default UseAllUserChats;

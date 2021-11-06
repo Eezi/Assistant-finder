@@ -16,7 +16,7 @@ const ChatProfile: FC<User> = ({ description, name, phone, email, region, userTy
     return (
         <div 
          style={{ wordWrap: 'break-word' }} 
-         className="container-fluid min-h-75 text-center text-light p-1">
+         className="container-fluid min-h-75 text-center text-light p-1 py-3">
           <div className="pt-2">
             <h5 className="text-light">{name}</h5>
             <p>{email}</p>

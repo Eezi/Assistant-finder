@@ -6,7 +6,6 @@ import { Badge } from 'react-bootstrap'
 import Avatar from './Avatar'
 import UseAllUserChats from '../../utils/hooks/useAllUserChats';
 import io, { Socket } from 'socket.io-client';
-//import { useSocket } from '../../utils/hooks/useSocket';
 
 interface ChatItemProps {
     isActive: boolean
@@ -19,11 +18,10 @@ interface ChatItemProps {
 const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }): ReactElement => {
     const [unreadMessages, setUnreadMessages] = useState(0);
     const history = useHistory();
-    //const { socket } = useSocket();
+    const [socket, setSocket] = useState(null);
     const { 
       addToUnredCounter 
-    } = UseAllUserChats();
-  const [socket, setSocket] = useState(null);
+    } = UseAllUserChats(socket);
   
   useEffect((): (() => void) => {
     // Tämä ei välttämättä toimi kun vie tuontantoon
@@ -52,15 +50,17 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
 
     const handleClickChat = (id) => {
       history.push(`/chats/${id}`)
-      // Tässä voisi välittää tiedon että luetaan viestit
-      socket.emit('readMessages', { userId, chatId: chat._id});
+      if (unreadMessages > 0) {
+        console.log('EMIT SOCKET lukee viestin')
+        socket.emit('readMessages', { userId, chatId: chat._id});
+      }
     };
 
     const getInitials = (name) => {
      let initials = name.split(' ');
 
      if(initials?.length > 1) {
-     initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+      initials = initials.shift().charAt(0) + initials.pop().charAt(0);
      } else {
       initials = name?.substring(0, 2);
     }
@@ -88,7 +88,7 @@ type PropType = {
 const Container = styled.div<PropType>`
     padding: 5px 5px 0 5px;
     border-radius: 5px;
-    border: ${props => props.isActive ? "1px solid #00fff1 !important" : "none"};
+    outline: ${props => props.isActive ? "1px solid #00fff1 !important" : "none"};
     &:hover {
       cursor: pointer;
     }

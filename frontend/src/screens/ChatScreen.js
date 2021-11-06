@@ -55,7 +55,7 @@ const ChatScreen = ({ match }) => {
     }
   }, [loading, chat, dispatch, userInfo])
 
-  if (loading || loadingUser || loadingParticipated)return <Loader />
+  if (loading || loadingUser || loadingParticipated) return <Loader />
 
  if (allUserChats?.length <= 0) {
   return <EmptyState 

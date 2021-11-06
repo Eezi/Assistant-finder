@@ -18,6 +18,9 @@ import {
   GET_CHAT_FAIL,
   GET_CHAT_RESET,
   USER_CHATS_RESET,
+  READ_CHAT_REQUEST,
+  READ_CHAT_SUCCESS,
+  READ_CHAT_FAIL,
 } from "../constants/chatConstants.js";
 
 export const userChatsReducer = (state = { allUserChats: null }, action) => {
@@ -38,13 +41,13 @@ export const userChatsReducer = (state = { allUserChats: null }, action) => {
   }
 };
 
-export const productDeleteReducer = (state = {}, action) => {
+export const readChatReducer = (state, action) => {
   switch (action.type) {
-    case PRODUCT_DELETE_REQUEST:
+    case READ_CHAT_REQUEST:
       return { loading: true };
-    case PRODUCT_DELETE_SUCCESS:
+    case READ_CHAT_SUCCESS:
       return { loading: false, success: true };
-    case PRODUCT_DELETE_FAIL:
+    case READ_CHAT_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

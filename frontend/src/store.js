@@ -3,10 +3,10 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
   userChatsReducer,
-  productDeleteReducer,
   productReviewCreateRedcuer,
   chatCreateReducer,
-  getChatByIdReducer
+  getChatByIdReducer,
+  readChatReducer,
 } from "./reducers/chatReducers.js";
 import {
   userLoginReducer,
@@ -29,10 +29,10 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   userUpdate: updateUserRedcuer,
-  productDelete: productDeleteReducer,
   chatCreate: chatCreateReducer,
   productReviewCreate: productReviewCreateRedcuer,
   participatedUsers: participatedUsersReducer,
+  //readMessages: readChatReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -37,7 +37,7 @@ const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) 
  if (loading || loadingUsers) return <Loader />;
 
    return (
-     <div className="min-h-75">
+     <div className="min-h-75 py-3">
       <Row className="justify-content-center text-light">
       <Col>
         <h6 className="my-3 text-center text-light">Keskustelut</h6>

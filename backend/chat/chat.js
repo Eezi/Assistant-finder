@@ -11,6 +11,7 @@ class Connection {
     this.io = io;
 
     socket.on('getMessages', () => this.getMessages());
+    socket.on('getReadMessages', () => this.sendReadMessages());
     socket.on('message', (value) => this.handleMessage(value));
     socket.on('readMessages', (args) => this.readMessages(args));
     socket.on('disconnect', () => this.disconnect());
@@ -22,14 +23,19 @@ class Connection {
   sendMessage(message) {
       this.io.sockets.emit('message', message);
   }
+
+  sendReadMessages(messages) {
+      console.log('new read messages', messages)
+      this.io.sockets.emit('readMessages', messages);
+  }
   
   getMessages() {
     messages.forEach((message) => this.sendMessage(message));
   }
 
   readMessages = async(args) => {
-    console.log('TULEEKO TÄHÄ', args)
-    readChatMessages(args)
+    const data = await readChatMessages(args);
+    this.sendReadMessages(data);
   }
 
   handleMessage = async(value) => {

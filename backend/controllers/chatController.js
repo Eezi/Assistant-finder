@@ -115,7 +115,6 @@ const addNewMessage = asyncHandler(async(message) => {
 });
 
 const readChatMessages = asyncHandler(async(args) => {
-  console.log('ARSGSS', args)
   // Muutetaan ne viestit luettu jossa createdBy !== useId
   const { userId, chatId } = args;
 
@@ -127,7 +126,9 @@ const readChatMessages = asyncHandler(async(args) => {
     return message;
   });
   console.log('messages', newMessages)
-  Chat.update({ _id: chatId }, { $set: { messages: newMessages }});
+  chat.messages = newMessages;
+  await chat.save()
+  return chat.messages;
 
   /*Chat.update({
     _id: chatId,
