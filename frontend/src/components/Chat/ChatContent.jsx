@@ -1,24 +1,13 @@
-import React, { FC, useState, useEffect } from 'react'
-import Avatar from './Avatar'
+import React from 'react'
 import styled from 'styled-components'
 import MessageInput from './MessageInput'
 import Messages from './Messages'
 import Loader from "../Loader";
-//import { useSocket } from '../../utils/hooks/useSocket';
-import io from 'socket.io-client';
+import useAllUserChats from '../../utils/hooks/useAllUserChats';
 
 const ChatContent = ({ chatMessages, user, participatedUser, loading, chatId }) => {
-  const [socket, setSocket] = useState(null);
-  
-  useEffect(() => {
-    // Tämä ei välttämättä toimi kun vie tuontantoon
-    const newSocket = io(`http://${window.location.hostname}:8080`);
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
-
+  const { socket } = useAllUserChats();
   if (loading) return <Loader />; 
-
     return (
         <div style={{ minHeight: '600px',display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="px-2 py-3 mh-100">
           <div className="blocks">

@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Collapse } from 'react-bootstrap'
+import { Collapse } from 'react-bootstrap'
 
 interface User {
   description: string,
@@ -11,7 +11,7 @@ interface User {
   userType: string,
 }
 
-const ChatProfile: FC<User> = ({ description, name, phone, email, region, userType }) => {
+const ChatProfile: FC<User> = ({ description, name, phone, email, region, userType }): ReactElement => {
     const [open, setOpen] = useState(false)
     return (
         <div 

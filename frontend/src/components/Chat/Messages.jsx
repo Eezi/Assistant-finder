@@ -1,17 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { getUserChats } from '../../actions/chatActions';
-import { useSelector, useDispatch } from "react-redux"; 
 import UseAllUserChats from '../../utils/hooks/useAllUserChats';
 
-const Messages = ({ socket, chatMessages, participatedUser, user }) => {
+const Messages = ({ chatMessages, user }) => {
   const [messages, setMessages] = useState([]);
   const messageRef = useRef();
-  const dispatch = useDispatch();
   moment.locale('fi')
 
   const { 
+    socket,
     addToUnredCounter,
    } = UseAllUserChats();
   
@@ -20,40 +18,26 @@ const Messages = ({ socket, chatMessages, participatedUser, user }) => {
   }, [chatMessages]);
 
   useEffect(() => {
-    const messageListener = (message) => {
-        if (message?.length > 0) {
-            setMessages(message)
-            console.log('CHATTI MUUTTUU JAT TULEE VIESTI')
-            // Tässä kohtaa voisi päivittää chattien tilaa
-          //dispatch(getUserChats())
-            addToUnredCounter(1);
+    if (socket) {
+    const messageListener = (messages) => {
+      if (messages?.length > 0) {
+        setMessages(messages)
+        // Jos chatti on auki ja tulee uusi viesti niin 
+        // halutaan vähentää se uusista viesteistä.
+        if (messages?.length > 0 && messages[messages.length - 1]?.createdBy !== user?._id) {
+          addToUnredCounter(1, 'decrement');
         }
-    };
-  
-    const deleteMessageListener = (messageID) => {
-      setMessages((prevMessages) => {
-        const newMessages = {...prevMessages};
-        delete newMessages[messageID];
-        return newMessages;
-      });
+      }
     };
   
     socket.on('message', messageListener);
-    socket.on('deleteMessage', deleteMessageListener);
     socket.emit('getMessages');
 
     return () => {
       socket.off('message', messageListener);
-      socket.off('deleteMessage', deleteMessageListener);
     };
+  }
   }, [socket]);
-
-  const checkUserName = (userId) => {
-    if (userId === participatedUser?._id) {
-      return participatedUser.name;
-    }
-    return user?.name;
-  };
 
   const scrollBottomOfChat = () => {
     const scroll = messageRef.current.scrollHeight - messageRef.current.clientHeight;

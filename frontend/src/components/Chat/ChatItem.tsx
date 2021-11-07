@@ -5,7 +5,6 @@ import { ChatTypes } from '../../types'
 import { Badge } from 'react-bootstrap'
 import Avatar from './Avatar'
 import UseAllUserChats from '../../utils/hooks/useAllUserChats';
-import io, { Socket } from 'socket.io-client';
 
 interface ChatItemProps {
     isActive: boolean
@@ -18,31 +17,21 @@ interface ChatItemProps {
 const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }): ReactElement => {
     const [unreadMessages, setUnreadMessages] = useState(0);
     const history = useHistory();
-    const [socket, setSocket] = useState(null);
     const { 
-      addToUnredCounter 
-    } = UseAllUserChats(socket);
-  
-  useEffect((): (() => void) => {
-    // Tämä ei välttämättä toimi kun vie tuontantoon
-    const newSocket = io(`http://${window.location.hostname}:8080`);
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
+      addToUnredCounter,
+      socket,
+    } = UseAllUserChats();
 
     useEffect(() => {
         if (chat?.messages?.length > 0) {
-            const counter = chat.messages.map((message) => {
-                if (message.receiverHasRead === false && message.createdBy !== userId) {
-                    setUnreadMessages(unreadMessages => unreadMessages + 1);
-                }
-            });
+          const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId).length;
+          setUnreadMessages(unreadMessages => unreadMessages + counter);
         }
     }, [chat]);
     
     useEffect(() => {
-      if (chat?.messages?.length > 0 && unreadMessages >= 0 && chat?._id === urlChatId) {
-        const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId)?.length || 0;
+      if (chat?.messages?.length > 0 && unreadMessages > 0 && chat?._id === urlChatId) {
+        const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId)?.length;
         setUnreadMessages(messages => messages - counter);
         addToUnredCounter(counter, 'decrement');
       }
@@ -59,13 +48,13 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
     const getInitials = (name) => {
      let initials = name.split(' ');
 
-     if(initials?.length > 1) {
-      initials = initials.shift().charAt(0) + initials.pop().charAt(0);
-     } else {
-      initials = name?.substring(0, 2);
-    }
+      if(initials?.length > 1) {
+        initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+      } else {
+        initials = name?.substring(0, 2);
+      }
 
-     return initials?.toUpperCase();
+      return initials?.toUpperCase();
     };
 
     return (

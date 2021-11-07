@@ -21,6 +21,8 @@ const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) 
 
 
   useEffect(() => {
+    // Haetaan käyttäjän chattien osapuolien userIdt
+    // Joilla haetaan käyttäjien tiedot
     if (allUserChats?.length > 0 && allUserChats && !loading) {
       const participatedIds = 
       allUserChats?.map((chat) => chat.participatedUser).

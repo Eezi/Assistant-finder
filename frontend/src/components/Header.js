@@ -13,7 +13,6 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const { 
-    loading,
     allUnreadMessages,
     resetMessageCounter,
    } = UseAllUserChats();

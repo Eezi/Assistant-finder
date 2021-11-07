@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'; 
-import { useLocation } from 'react-router-dom' 
 import { useSelector, useDispatch } from "react-redux"; 
 import { getUserChats } from '../../actions/chatActions';
+import io from 'socket.io-client';
 
-const UseAllUserChats = (socket) => { 
+const UseAllUserChats = () => { 
   const [allUnreadMessages, setAllUnreadMessages] = useState(0); 
+  const [initState, setInitState] = useState(false); 
+  const [socket, setSocket] = useState(null);
 
-  const location = useLocation();
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -15,14 +16,19 @@ const UseAllUserChats = (socket) => {
   const allChats = useSelector((state) => state.userChats);
   const { allUserChats, loading: loadingChats } = allChats;
 
-  const rightPathname = location.pathname.split('/')[1];
-  const chatId = location.pathname.split('/')[2];
+  useEffect(() => {
+    // Tämä ei välttämättä toimi kun vie tuontantoon
+    const newSocket = io(`http://${window.location.hostname}:8080`);
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
 
   const resetMessageCounter = () => {
     setAllUnreadMessages(0);
   };
 
   const addToUnredCounter = (numberToAdd, action) => {
+    console.log('numberToAdd', numberToAdd, 'action', action)
     if (action === 'increment') {
       return setAllUnreadMessages(allUnreadMessages => allUnreadMessages + numberToAdd);
     }
@@ -32,28 +38,21 @@ const UseAllUserChats = (socket) => {
   };
 
   useEffect(() => {
+    if (socket) {
     const messageListener = (messages) => {
-      console.log('MESSAGES', messages)
+        if (messages?.length > 0 && messages[messages.length - 1]?.createdBy !== userInfo?._id) {
+          addToUnredCounter(1, 'increment');
+        }
     };
   
-  
-    socket.on('readMessages', messageListener);
-    socket.emit('getReadMessages');
+    socket.on('message', messageListener);
+    socket.emit('getMessages');
 
     return () => {
-      socket.off('readMessages', messageListener);
-
-    };
-  }, [socket]);
-
-  useEffect(() => {
-    if (allUserChats && rightPathname === 'chats' && allUnreadMessages > 0) {
-      const currentChat = allUserChats.find((chat) => chat._id === chatId);
-      const unreadMessagesCount = currentChat?.messages?.filter((message) => 
-        message.receiverHasRead === false && message.createdBy !== userInfo._id)?.length || 0;
-      setAllUnreadMessages(messages => messages - unreadMessagesCount);
+      socket.off('message', messageListener);
     }
-  }, [chatId, allUserChats]);
+  }
+  }, [socket]);
 
   useEffect(() => {
     if (!allUserChats && userInfo) {
@@ -63,21 +62,23 @@ const UseAllUserChats = (socket) => {
 
   // Lasketaan kaikki lukemattomat viestit kun kaikki chatit tulee 
   useEffect(() => {
-    if (allUserChats && !loadingChats) {
+    if (allUserChats && !loadingChats && !initState) {
       const unreadedMessages = allUserChats?.map((chat) => {
         if (chat?.messages?.length > 0) {
           chat.messages.forEach((message) => {
             if (message.receiverHasRead === false && message.createdBy !== userInfo._id) {
+            console.log('messages', message, chat._id)
               setAllUnreadMessages(allUnreadMessages => allUnreadMessages + 1);
             }
 
           });
         }         
         return chat;
-      })
+      });
+      setInitState(true);
     }
 
-  }, [allUserChats, loadingChats, loadingUser, userInfo?._id]);
+  }, [allUserChats, loadingChats, loadingUser, userInfo?._id, initState]);
   console.log('unreadedMessages', allUnreadMessages)
 
 return {    
@@ -85,6 +86,7 @@ return {
     allUnreadMessages,
     addToUnredCounter,
     resetMessageCounter,
+    socket,
 }
 }
  
