@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Message from "../components/Message";
 import ChatList from '../components/Chat/ChatList';
 import ChatProfile from '../components/Chat/ChatProfile';
@@ -17,6 +17,7 @@ import ChatContent from "../components/Chat/ChatContent";
 import Loader from "../components/Loader";
 
 const ChatScreen = ({ match }) => {
+  const [fetchedChats, setFetchedChats] = useState(false);
   const chatId = match.params.id;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -24,23 +25,32 @@ const ChatScreen = ({ match }) => {
   const chatData = useSelector((state) => state.getChat);
   const { chat, loading } = chatData;
 
+  const chatCreated = useSelector((state) => state.chatCreate);
+  const { chat: createdChat } = chatCreated;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, loading: loadingUser } = userLogin;
 
   const participated = useSelector((state) => state.userDetails);
   const { user: participatedUser, loading: loadingParticipated } = participated;
-
+  
   const allChats = useSelector((state) => state.userChats);
   const { allUserChats, loading: loadingChats } = allChats;
 
   useEffect(() => {
-    if (!allUserChats) {
-      dispatch(getUserChats());
+    if (!allUserChats || allUserChats?.length <= 0) {
+      if (!fetchedChats) {
+        dispatch(getUserChats());
+        setFetchedChats(true);
+      }
     }
     if (!chatId && allUserChats?.length > 0) {
       history.push(`/chats/${allUserChats[0]?._id}`)
+    } 
+    else if (!chatId && createdChat) {
+      history.push(`/chats/${createdChat?._id}`)
     }
-  }, [dispatch, allUserChats, history, chatId]);
+  }, [dispatch, allUserChats, history, chatId, createdChat, fetchedChats]);
 
   useEffect(() => {
     if (chatId) {

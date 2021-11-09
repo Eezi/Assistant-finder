@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { createChat } from "../actions/chatActions";
 
-const UserCard = ({ cardInfo, userId, index, users }) => {
+const UserCard = ({ cardInfo, currentUserId, index, users }) => {
   const { description, name, phone, email, gender, region, _id, experience } = cardInfo;
   const dispatch = useDispatch();
   const [allowPush, setAllowPush] = useState(false);
@@ -28,7 +28,7 @@ const UserCard = ({ cardInfo, userId, index, users }) => {
 
   const handleCreateChat = () => {
     const chat = {
-      createdBy: userId,
+      createdBy: currentUserId,
       participatedUser: _id,
       createdAt: new Date(),
       messages: [],

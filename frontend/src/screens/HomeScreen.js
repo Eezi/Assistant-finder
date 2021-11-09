@@ -35,7 +35,7 @@ const HomeScreen = ({ match, history }) => {
         <Div>
           {users.map((user, index) => (
           <Accordion key={user._id}>
-            <UserCard  users={users} cardInfo={user} userId={user?._id} />
+            <UserCard  users={users} cardInfo={user} currentUserId={userInfo?._id} />
           </Accordion>
           ))}
         </Div>

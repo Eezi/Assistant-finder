@@ -34,7 +34,7 @@ const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) 
   }, [allUserChats, loading, dispatch, userId]);
 
   const activeChat = allUserChats?.find((chat) => chat._id === chatId);
-  const currentChatUserId = participatedUsers.find((user) => user._id === activeChat?.participatedUser || user._id === activeChat?.createdBy)?._id;
+  const currentChatUserId = participatedUsers?.find((user) => user._id === activeChat?.participatedUser || user._id === activeChat?.createdBy)?._id;
 
  if (loading || loadingUsers) return <Loader />;
 
