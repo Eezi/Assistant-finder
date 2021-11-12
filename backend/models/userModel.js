@@ -10,6 +10,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    unreadMessages: {
+        type: Number,
+        required: false,
+    },
     gender: {
         type: String,
         required: false,

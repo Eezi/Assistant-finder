@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Chat from "../models/chatModel.js";
+import User from "../models/userModel.js";
 
 const getUserChats = asyncHandler(async (req, res) => {
   const {
@@ -101,6 +102,14 @@ const updateProduct = asyncHandler(async (req, res) => {
 const addNewMessage = asyncHandler(async(message) => {
   message.receiverHasRead = false;
   const chat = await Chat.findById(message.chatId);
+  const userId = message.createdBy === chat.createdBy ? chat.participatedUser : chat.createdBy;
+  const user = User.findById(userId);
+  if (!user.unreadMessages || user.unreadMessages === 0) {
+    user.unreadMessages = 1;
+  } else {
+    user.unreadMessages++;
+  }
+  user.save();
 
   if (!chat.messages) {
     chat.messages = [];
