@@ -103,7 +103,7 @@ const addNewMessage = asyncHandler(async(message) => {
   message.receiverHasRead = false;
   const chat = await Chat.findById(message.chatId);
   const userId = message.createdBy === chat.createdBy ? chat.participatedUser : chat.createdBy;
-  const user = User.findById(userId);
+  const user = await User.findById(userId);
   if (!user.unreadMessages || user.unreadMessages === 0) {
     user.unreadMessages = 1;
   } else {
@@ -128,15 +128,25 @@ const readChatMessages = asyncHandler(async(args) => {
   const { userId, chatId } = args;
 
   const chat = await Chat.findById(chatId);
+  let counter = 0;
   const newMessages = chat.messages.map((message) => {
     if (message.createdBy !== userId) {
       message.receiverHasRead = true;
+      counter++;
     }
     return message;
   });
   console.log('messages', newMessages)
   chat.messages = newMessages;
-  await chat.save()
+  // Tässä kohtaan vähennetään käyttäjän lukemattomista viesteistä 
+  const user = await User.findById(userId);
+  console.log('FIRST unreadMessages', user.unreadMessages)
+  if (user?.unreadMessages >= counter) {
+    user.unreadMessages - counter;
+  }
+  console.log('user unreadMessages', user.unreadMessages, 'counter', counter)
+  await user.save();
+  await chat.save();
   return chat.messages;
 
   /*Chat.update({

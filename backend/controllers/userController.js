@@ -13,6 +13,7 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       userType: user.userType,
+      unreadMessages: user.unreadMessages || 0,
       token: generateToken(user._id),
     });
   } else {
@@ -93,6 +94,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       phone: user.phone,
       busyStartDate: user?.busyStartDate,
       busyEndDate: user?.busyEndDate,
+      unreadMessages: user.unreadMessages || 0,
     });
   } else {
     res.status(404);

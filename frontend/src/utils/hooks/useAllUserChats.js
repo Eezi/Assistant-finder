@@ -1,20 +1,12 @@
 import { useEffect, useState } from 'react'; 
-import { useSelector, useDispatch } from "react-redux"; 
-import { getUserChats } from '../../actions/chatActions';
+import { useSelector } from "react-redux"; 
 import io from 'socket.io-client';
 
 const UseAllUserChats = () => { 
   const [allUnreadMessages, setAllUnreadMessages] = useState(0); 
-  const [initState, setInitState] = useState(false); 
   const [socket, setSocket] = useState(null);
-
-  const dispatch = useDispatch();
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, loading: loadingUser } = userLogin;
-
-  const allChats = useSelector((state) => state.userChats);
-  const { allUserChats, loading: loadingChats } = allChats;
 
   useEffect(() => {
     // Tämä ei välttämättä toimi kun vie tuontantoon
@@ -55,39 +47,19 @@ const UseAllUserChats = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (!allUserChats && userInfo) {
-      dispatch(getUserChats());
+    if (userInfo?.unreadMessages > 0) {
+      setAllUnreadMessages(userInfo?.unreadMessages);
     }
-  }, [dispatch, allUserChats, userInfo]);
+  }, [userInfo, userInfo?.unreadMessages]);
 
-  // Lasketaan kaikki lukemattomat viestit kun kaikki chatit tulee 
-  useEffect(() => {
-    if (allUserChats && !loadingChats && !initState) {
-      const unreadedMessages = allUserChats?.map((chat) => {
-        if (chat?.messages?.length > 0) {
-          chat.messages.forEach((message) => {
-            if (message.receiverHasRead === false && message.createdBy !== userInfo._id) {
-            console.log('messages', message, chat._id)
-              setAllUnreadMessages(allUnreadMessages => allUnreadMessages + 1);
-            }
-
-          });
-        }         
-        return chat;
-      });
-      setInitState(true);
-    }
-
-  }, [allUserChats, loadingChats, loadingUser, userInfo?._id, initState]);
   console.log('unreadedMessages', allUnreadMessages)
 
-return {    
-    loadingChats,
+  return {    
     allUnreadMessages,
     addToUnredCounter,
     resetMessageCounter,
     socket,
-}
-}
+  };
+};
  
 export default UseAllUserChats;
