@@ -27,7 +27,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
           const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId).length;
           setUnreadMessages(unreadMessages => unreadMessages + counter);
         }
-    }, [chat]);
+    }, [chat, userId]);
     
     useEffect(() => {
       if (chat?.messages?.length > 0 && unreadMessages > 0 && chat?._id === urlChatId) {
@@ -35,7 +35,7 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
         setUnreadMessages(messages => messages - counter);
         addToUnredCounter(counter, 'decrement');
       }
-    }, [urlChatId, chat]);
+    }, [urlChatId, chat, userId, unreadMessages, addToUnredCounter]);
 
     const handleClickChat = (id) => {
       history.push(`/chats/${id}`)

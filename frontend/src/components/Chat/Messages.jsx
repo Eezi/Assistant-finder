@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import UseAllUserChats from '../../utils/hooks/useAllUserChats';
 
-const Messages = ({ chatMessages, user }) => {
+const Messages = ({ chatMessages, user, urlChatId }) => {
   const [messages, setMessages] = useState([]);
   const messageRef = useRef();
   moment.locale('fi')
@@ -19,8 +19,9 @@ const Messages = ({ chatMessages, user }) => {
 
   useEffect(() => {
     if (socket) {
-    const messageListener = (messages) => {
-      if (messages?.length > 0) {
+    const messageListener = (messageValue) => {
+      const { messages, chatId } = messageValue;
+      if (messages?.length > 0 && urlChatId === chatId) {
         setMessages(messages)
         // Jos chatti on auki ja tulee uusi viesti niin 
         // halutaan vähentää se uusista viesteistä.

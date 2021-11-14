@@ -46,6 +46,7 @@ const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) 
       {allUserChats?.map((chat, index) => {
       const name = participatedUsers?.find((user) => user._id === chat.participatedUser || user._id === chat.createdBy)?.name;
         if (!name) return null;
+       if (chat.createdBy === userId || chat?.messages?.length > 0) {
         return (
         <ChatItem 
           isActive={currentChatUserId === chat.participatedUser || currentChatUserId === chat.createdBy} 
@@ -55,7 +56,9 @@ const ChatList: FC<ChatListProps> = ({ userId, allUserChats, loading, chatId }) 
           key={chat._id}
           name={name}>
         </ChatItem>
-      )})}
+        )
+       }   
+      })}
       </Col>
      </Row>
   </div>

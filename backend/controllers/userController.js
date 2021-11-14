@@ -53,6 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
     region,
     experience,
     userType,
+    unreadMessages: 0,
   });
 
   if (user) {
@@ -67,6 +68,7 @@ const registerUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       experience: user.experience,
       userType: user.userType,
+      unreadMessages: user.unreadMessages,
       token: generateToken(user._id),
     });
   } else {

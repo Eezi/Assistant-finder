@@ -17,7 +17,7 @@ const ChatContent = ({ chatMessages, user, participatedUser, loading, chatId }) 
           </div>
         { socket ? (
         <ChatContainer>
-          <Messages user={user} participatedUser={participatedUser} chatMessages={chatMessages} socket={socket} />
+          <Messages urlChatId={chatId} user={user} participatedUser={participatedUser} chatMessages={chatMessages} socket={socket} />
           <MessageInput chatId={chatId} participatedUser={participatedUser?._id} userId={user?._id} socket={socket} />
         </ChatContainer>
       ) : (

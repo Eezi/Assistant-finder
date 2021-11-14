@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 
 const UseAllUserChats = () => { 
   const [allUnreadMessages, setAllUnreadMessages] = useState(0); 
+  const [initState, setInitState] = useState(false); 
   const [socket, setSocket] = useState(null);
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, loading: loadingUser } = userLogin;
@@ -47,10 +48,11 @@ const UseAllUserChats = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (userInfo?.unreadMessages > 0) {
+    if (userInfo?.unreadMessages > 0 && !initState) {
       setAllUnreadMessages(userInfo?.unreadMessages);
+      setInitState(true);
     }
-  }, [userInfo, userInfo?.unreadMessages]);
+  }, [userInfo, userInfo?.unreadMessages, initState]);
 
   console.log('unreadedMessages', allUnreadMessages)
 

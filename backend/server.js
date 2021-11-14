@@ -19,8 +19,8 @@ connectDB();
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-  origin: '*',
-  methods: ['GET', 'POST'],
+  //origin: '*',
+  //methods: ['GET', 'POST'],
 });
 
 if(process.env.NODE_ENV === 'development') {
