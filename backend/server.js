@@ -21,6 +21,7 @@ const server = createServer(app);
 const io = new Server(server, {
   //origin: '*',
   //methods: ['GET', 'POST'],
+  //wsEngine: 'ws',
 });
 
 if(process.env.NODE_ENV === 'development') {

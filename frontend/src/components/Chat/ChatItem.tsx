@@ -15,35 +15,51 @@ interface ChatItemProps {
 }
 
 const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }): ReactElement => {
-    const [unreadMessages, setUnreadMessages] = useState(0);
+    //const [unreadMessages, setUnreadMessages] = useState(0);
+    const [unreadMessages, setUnreadMessages] = useState(false);
     const history = useHistory();
     const { 
       addToUnredCounter,
       socket,
+      messageChatId,
+      setMessageChatId,
     } = UseAllUserChats();
 
     useEffect(() => {
         if (chat?.messages?.length > 0) {
           const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId).length;
-          setUnreadMessages(unreadMessages => unreadMessages + counter);
+          //setUnreadMessages(unreadMessages => unreadMessages + counter);
+          if (counter > 0) {
+            setUnreadMessages(true);
+          }
         }
     }, [chat, userId]);
+  console.log('item unread messa', unreadMessages)
     
     useEffect(() => {
-      if (chat?.messages?.length > 0 && unreadMessages > 0 && chat?._id === urlChatId) {
+      if (chat?.messages?.length > 0 && unreadMessages && chat?._id === urlChatId) {
         const counter = chat.messages.filter((message) => message.receiverHasRead === false && message.createdBy !== userId)?.length;
-        setUnreadMessages(messages => messages - counter);
-        addToUnredCounter(counter, 'decrement');
-      }
-    }, [urlChatId, chat, userId, unreadMessages, addToUnredCounter]);
+        console.log('counter', counter, 'chatID', chat._id, unreadMessages)
 
-    const handleClickChat = (id) => {
-      history.push(`/chats/${id}`)
-      if (unreadMessages > 0) {
-        console.log('EMIT SOCKET lukee viestin')
-        socket.emit('readMessages', { userId, chatId: chat._id});
+        if (counter > 0) {
+          //setUnreadMessages(messages => messages - counter);
+          setUnreadMessages(false);
+          console.log('EMIT SOCKET lukee viestin')
+          socket.emit('readMessages', { userId, chatId: chat._id});
+          addToUnredCounter(counter, 'decrement');
+        }
       }
-    };
+    }, [urlChatId, chat, userId, unreadMessages, addToUnredCounter, socket]);
+
+  useEffect(() => {
+    if (messageChatId === chat?._id) {
+      //setUnreadMessages(messages => messages + 1);
+      setUnreadMessages(true);
+      setMessageChatId(null);
+    }
+  }, [messageChatId]);
+
+    const handleClickChat = (id) => history.push(`/chats/${id}`);
 
     const getInitials = (name) => {
      let initials = name.split(' ');
@@ -65,7 +81,8 @@ const ChatItem: FC<ChatItemProps> = ({ chat, isActive, userId, name, urlChatId }
         >
           <Avatar initials={getInitials(name)} />
           <small className="p-2">{name}</small>
-          {unreadMessages > 0 && <StyledBadge pill bg="danger">{unreadMessages}</StyledBadge>}
+          {/*unreadMessages > 0 && <StyledBadge pill bg="danger">{unreadMessages}</StyledBadge>*/}
+          {unreadMessages && <i className="fas fa-bell text-danger"></i>}
         </Container>
     )
 }

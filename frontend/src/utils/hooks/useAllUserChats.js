@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 
 const UseAllUserChats = () => { 
   const [allUnreadMessages, setAllUnreadMessages] = useState(0); 
+  const [messageChatId, setMessageChatId] = useState(null);
   const [initState, setInitState] = useState(false); 
   const [socket, setSocket] = useState(null);
   const userLogin = useSelector((state) => state.userLogin);
@@ -32,9 +33,11 @@ const UseAllUserChats = () => {
 
   useEffect(() => {
     if (socket) {
-    const messageListener = (messages) => {
+    const messageListener = (value) => {
+        const { messages, chatId } = value;
         if (messages?.length > 0 && messages[messages.length - 1]?.createdBy !== userInfo?._id) {
           addToUnredCounter(1, 'increment');
+          setMessageChatId(chatId);
         }
     };
   
@@ -61,6 +64,8 @@ const UseAllUserChats = () => {
     addToUnredCounter,
     resetMessageCounter,
     socket,
+    messageChatId,
+    setMessageChatId,
   };
 };
  
